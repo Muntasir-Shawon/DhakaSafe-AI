@@ -1,4 +1,4 @@
-﻿# DhakaSafe AI (ঢাকা সেফ এআই)
+# DhakaSafe AI (ঢাকা সেফ এআই)
 ### AI-Powered Street Theft Risk Prediction & Safer Route Recommendation for Dhaka
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-DhakaSafe--AI-181717?logo=github&logoColor=white)](https://github.com/Muntasir-Shawon/DhakaSafe-AI)
@@ -13,11 +13,11 @@
 
 ## 🌐 Live Links & Repository
 - **Private GitHub Repository**: [https://github.com/Muntasir-Shawon/DhakaSafe-AI](https://github.com/Muntasir-Shawon/DhakaSafe-AI)
-- **Live Demo Link (GitHub Pages)**: [https://muntasir-shawon.github.io/DhakaSafe-AI/](https://muntasir-shawon.github.io/DhakaSafe-AI/)
+- **Live Deployment on Vercel**: Connect private repository at [https://vercel.com/new](https://vercel.com/new) (1-click zero config via included `vercel.json`)
 - **Local Dev Web App**: `http://localhost:5173`
 - **Local Backend API & OpenAPI Docs**: `http://127.0.0.1:8000/docs`
 
-> *Note: GitHub Pages on private repositories requires GitHub Pro or making the repository public in Repository Settings -> Change to Public.*
+> *Note on GitHub Pages: GitHub Free only serves GitHub Pages on public repositories. For private repositories, Vercel provides free 100% private deployments.*
 
 ---
 
