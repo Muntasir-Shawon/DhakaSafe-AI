@@ -1,0 +1,26 @@
+# Docker build context is the repository root.
+# Exclude everything the backend container does not need.
+
+# VCS
+.git/
+.github/
+
+# Frontend is deployed separately on Vercel, not part of this image
+frontend/
+
+# Python caches / venvs
+backend/venv/
+backend/__pycache__/
+backend/app/**/__pycache__/
+*.pyc
+
+# Secrets, logs, OS noise
+.env
+*.log
+.DS_Store
+Thumbs.db
+
+# This Dockerfile and deployment config
+Dockerfile
+render.yaml
+vercel.json
