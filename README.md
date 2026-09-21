@@ -64,9 +64,13 @@ DhakaSafe AI utilizes 4 interconnected data layers:
 
 ## 💻 Tech Stack
 - **Frontend**: React 19, TypeScript, Vite, Tailwind CSS v4, Leaflet, React-Leaflet, Lucide Icons.
+- **Interactive Map Visualizations**:
+  - **Vibrant OpenStreetMap Default**: High-detail full color map displaying street names, water bodies, parks, and landmarks without any API keys or watermarks.
+  - **Multi-Theme Switcher**: Instant switching between **🗺️ Color Map** (OSM), **🛰️ Satellite** (Esri World Imagery), and **🌙 Dark** (Canvas).
+  - **High-Contrast Road Casings**: Double-stroke polyline casings ensuring risk-colored routes (green, amber, orange, red) stand out boldly against colorful map backgrounds.
 - **Backend API**: FastAPI, Pydantic, Uvicorn.
 - **AI / ML & GIS**: Scikit-learn, XGBoost, LightGBM, SHAP, NetworkX, Pandas, NumPy.
-- **CI/CD**: GitHub Actions (`deploy-pages.yml`).
+- **CI/CD & Deployment**: GitHub Actions (`deploy-pages.yml`), `vercel.json` for 1-click private repository hosting.
 
 ---
 
