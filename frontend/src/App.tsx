@@ -16,7 +16,8 @@ export function App() {
   useEffect(() => {
     async function checkHealth() {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/health');
+        const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://127.0.0.1:8000/api';
+        const res = await fetch(`${API_BASE_URL}/health`);
         if (res.ok) {
           setIsHealthy(true);
         } else {

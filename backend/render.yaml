@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: dhakasafe-ai-backend
+    runtime: docker
+    repo: https://github.com/Muntasir-Shawon/DhakaSafe-AI
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
