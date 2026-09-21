@@ -363,7 +363,10 @@ export const RouteFinder: React.FC = () => {
       {/* Main Interactive Map & Turn-by-Turn Panel */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Map View */}
-        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative h-[480px]">
+        <div
+          className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative h-[480px]"
+          style={{ minHeight: '480px' }}
+        >
           {activeRoute && activeRoute.path_coordinates.length > 0 ? (
             <MapContainer
               center={[23.77, 90.39]}

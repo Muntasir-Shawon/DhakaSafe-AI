@@ -250,7 +250,10 @@ export const RiskMap: React.FC = () => {
       {/* Main Map & Road Inspector Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Leaflet Map */}
-        <div className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative h-[520px] ${inspectedRoad ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+        <div
+          className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative h-[520px] ${inspectedRoad ? 'lg:col-span-2' : 'lg:col-span-3'}`}
+          style={{ minHeight: '520px' }}
+        >
           <MapContainer
             center={[23.77, 90.39]}
             zoom={12}
