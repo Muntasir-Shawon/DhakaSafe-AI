@@ -10,3 +10,5 @@ backend/app/**/__pycache__/
 .env
 .DS_Store
 Thumbs.db
+.vercel
+.env*

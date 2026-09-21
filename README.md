@@ -2,7 +2,7 @@
 ### AI-Powered Street Theft Risk Prediction & Safer Route Recommendation for Dhaka
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-DhakaSafe--AI-181717?logo=github&logoColor=white)](https://github.com/Muntasir-Shawon/DhakaSafe-AI)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-GitHub_Pages-brightgreen?logo=github)](https://muntasir-shawon.github.io/DhakaSafe-AI/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-brightgreen?logo=vercel)](https://dhakasafe-ai-teal.vercel.app)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/Frontend-React_19_TypeScript-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![ML](https://img.shields.io/badge/ML-RandomForest_XGBoost_LightGBM-FF9900)](https://scikit-learn.org/)
@@ -12,12 +12,13 @@
 ---
 
 ## 🌐 Live Links & Repository
-- **Private GitHub Repository**: [https://github.com/Muntasir-Shawon/DhakaSafe-AI](https://github.com/Muntasir-Shawon/DhakaSafe-AI)
-- **Live Deployment on Vercel**: Connect private repository at [https://vercel.com/new](https://vercel.com/new) (1-click zero config via included `vercel.json`)
+- **GitHub Repository**: [https://github.com/Muntasir-Shawon/DhakaSafe-AI](https://github.com/Muntasir-Shawon/DhakaSafe-AI)
+- **Live Frontend (Vercel)**: [https://dhakasafe-ai-teal.vercel.app](https://dhakasafe-ai-teal.vercel.app)
+- **Live Backend API (Render · FastAPI)**: [https://dhakasafe-ai-backend.onrender.com](https://dhakasafe-ai-backend.onrender.com) — Live API Docs: [https://dhakasafe-ai-backend.onrender.com/docs](https://dhakasafe-ai-backend.onrender.com/docs)
 - **Local Dev Web App**: `http://localhost:5173`
 - **Local Backend API & OpenAPI Docs**: `http://127.0.0.1:8000/docs`
 
-> *Note on GitHub Pages: GitHub Free only serves GitHub Pages on public repositories. For private repositories, Vercel provides free 100% private deployments.*
+> *Deployment note: The frontend SPA is hosted on **Vercel**, while the FastAPI + ML backend runs on **Render** (free tier, Docker) with the frontend wired to it via the `VITE_API_BASE_URL` environment variable. Render's free instance spins down after ~15 min of inactivity and takes ~30–60s to wake on the first request after idle.*
 
 ---
 
@@ -70,7 +71,7 @@ DhakaSafe AI utilizes 4 interconnected data layers:
   - **High-Contrast Road Casings**: Double-stroke polyline casings ensuring risk-colored routes (green, amber, orange, red) stand out boldly against colorful map backgrounds.
 - **Backend API**: FastAPI, Pydantic, Uvicorn.
 - **AI / ML & GIS**: Scikit-learn, XGBoost, LightGBM, SHAP, NetworkX, Pandas, NumPy.
-- **CI/CD & Deployment**: GitHub Actions (`deploy-pages.yml`), `vercel.json` for 1-click private repository hosting.
+- **CI/CD & Deployment**: Frontend on **Vercel** (root `vercel.json`), Backend on **Render** (root `Dockerfile` + `render.yaml` blueprint), GitHub Actions (`deploy-pages.yml`).
 
 ---
 
@@ -97,6 +98,32 @@ npm install
 npm run dev
 ```
 Frontend web application will be live at: `http://localhost:5173`
+
+> By default the app calls the local backend at `http://127.0.0.1:8000/api`. To point it at a deployed backend, copy `frontend/.env.example` to `frontend/.env` and set `VITE_API_BASE_URL` (e.g. `https://dhakasafe-ai-backend.onrender.com/api`).
+
+---
+
+## 🌍 Deployment
+
+The frontend and backend are deployed independently.
+
+### Frontend → Vercel
+The root `vercel.json` builds the Vite app (`npm --prefix frontend run build`, output `frontend/dist`) and rewrites all routes to `index.html` (SPA fallback).
+
+1. Import the repository at [https://vercel.com/new](https://vercel.com/new).
+2. Add the environment variable **`VITE_API_BASE_URL`** and apply it to **Production** (and **Preview** / **Development** if needed):
+   ```
+   VITE_API_BASE_URL = https://dhakasafe-ai-backend.onrender.com/api
+   ```
+3. Deploy. Without this variable, the app falls back to the local backend `http://127.0.0.1:8000/api`.
+
+### Backend → Render
+The FastAPI + ML backend is containerized via the root `Dockerfile` (`python:3.11-slim` with the `libgomp1` OpenMP runtime required by scikit-learn/LightGBM/SHAP) and ships a Blueprint at `render.yaml`.
+
+1. Create a **Web Service** (or **Blueprint**) from the repository on [https://render.com](https://render.com).
+2. Set **Dockerfile Path** to `Dockerfile` and **Docker Build Context** to `.` (repo root).
+3. Optionally set **Health Check Path** to `/api/health`.
+4. No manual env vars are required — Render injects `PORT`, and the container listens on `${PORT:-8000}`.
 
 ---
 
