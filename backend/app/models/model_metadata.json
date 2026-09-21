@@ -1,0 +1,71 @@
+{
+  "best_model": "Random Forest",
+  "features": [
+    "hour",
+    "is_weekend",
+    "is_night",
+    "is_rush_hour",
+    "rain",
+    "historical_incidents",
+    "night_incident_ratio",
+    "lighting_condition",
+    "bus_stops_count",
+    "police_stations_nearby",
+    "commercial_density",
+    "road_type_code",
+    "length_meters"
+  ],
+  "target": "target_high_risk",
+  "metrics_comparison": {
+    "Logistic Regression": {
+      "Accuracy": 0.9807,
+      "Precision": 0.9551,
+      "Recall": 0.8783,
+      "F1-Score": 0.9151,
+      "ROC-AUC": 0.9976,
+      "Brier Score": 0.0132
+    },
+    "Random Forest": {
+      "Accuracy": 0.9936,
+      "Precision": 1.0,
+      "Recall": 0.9457,
+      "F1-Score": 0.9721,
+      "ROC-AUC": 0.9998,
+      "Brier Score": 0.0057
+    },
+    "XGBoost": {
+      "Accuracy": 0.9936,
+      "Precision": 1.0,
+      "Recall": 0.9457,
+      "F1-Score": 0.9721,
+      "ROC-AUC": 0.9997,
+      "Brier Score": 0.0058
+    },
+    "LightGBM": {
+      "Accuracy": 0.9936,
+      "Precision": 1.0,
+      "Recall": 0.9457,
+      "F1-Score": 0.9721,
+      "ROC-AUC": 0.9996,
+      "Brier Score": 0.006
+    }
+  },
+  "feature_importances": {
+    "is_night": 0.2484,
+    "historical_incidents": 0.2328,
+    "hour": 0.23,
+    "lighting_condition": 0.1351,
+    "bus_stops_count": 0.0475,
+    "night_incident_ratio": 0.0262,
+    "length_meters": 0.0219,
+    "is_rush_hour": 0.0167,
+    "rain": 0.0132,
+    "police_stations_nearby": 0.013,
+    "road_type_code": 0.0115,
+    "commercial_density": 0.0037,
+    "is_weekend": 0.0
+  },
+  "total_training_samples": 10368,
+  "total_test_samples": 7776,
+  "calibration_status": "Calibrated with S-curve continuous risk mapper (0-100)"
+}

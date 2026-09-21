@@ -1,0 +1,2146 @@
+{
+  "metadata": {
+    "city": "Dhaka",
+    "total_nodes": 44,
+    "total_edges": 54,
+    "generated_at": "2026-09-21T20:27:40.533056"
+  },
+  "nodes": {
+    "NODE_FARMGATE": {
+      "id": "NODE_FARMGATE",
+      "name": "Farmgate Intersection",
+      "lat": 23.757,
+      "lon": 90.3892,
+      "area": "Farmgate",
+      "thana": "Tejgaon"
+    },
+    "NODE_KARWAN_BAZAR": {
+      "id": "NODE_KARWAN_BAZAR",
+      "name": "Karwan Bazar Chottor",
+      "lat": 23.7516,
+      "lon": 90.3938,
+      "area": "Karwan Bazar",
+      "thana": "Tejgaon"
+    },
+    "NODE_SHAHBAGH": {
+      "id": "NODE_SHAHBAGH",
+      "name": "Shahbagh Intersection",
+      "lat": 23.7388,
+      "lon": 90.3957,
+      "area": "Shahbagh",
+      "thana": "Shahbagh"
+    },
+    "NODE_DHANMONDI_27": {
+      "id": "NODE_DHANMONDI_27",
+      "name": "Dhanmondi 27 (Shankar)",
+      "lat": 23.7533,
+      "lon": 90.3698,
+      "area": "Dhanmondi",
+      "thana": "Dhanmondi"
+    },
+    "NODE_DHANMONDI_32": {
+      "id": "NODE_DHANMONDI_32",
+      "name": "Russell Square / Dhanmondi 32",
+      "lat": 23.7511,
+      "lon": 90.378,
+      "area": "Dhanmondi",
+      "thana": "Dhanmondi"
+    },
+    "NODE_SCIENCE_LAB": {
+      "id": "NODE_SCIENCE_LAB",
+      "name": "Science Laboratory Intersection",
+      "lat": 23.7395,
+      "lon": 90.3835,
+      "area": "Dhanmondi",
+      "thana": "New Market"
+    },
+    "NODE_KALABAGAN": {
+      "id": "NODE_KALABAGAN",
+      "name": "Kalabagan Bus Stand",
+      "lat": 23.746,
+      "lon": 90.38,
+      "area": "Kalabagan",
+      "thana": "Kalabagan"
+    },
+    "NODE_MOHAMMADPUR_TOWN_HALL": {
+      "id": "NODE_MOHAMMADPUR_TOWN_HALL",
+      "name": "Mohammadpur Town Hall",
+      "lat": 23.7602,
+      "lon": 90.3626,
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur"
+    },
+    "NODE_ASAD_GATE": {
+      "id": "NODE_ASAD_GATE",
+      "name": "Asad Gate",
+      "lat": 23.7592,
+      "lon": 90.3712,
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur"
+    },
+    "NODE_SHYAMOLI": {
+      "id": "NODE_SHYAMOLI",
+      "name": "Shyamoli Square",
+      "lat": 23.7712,
+      "lon": 90.363,
+      "area": "Shyamoli",
+      "thana": "Adabor"
+    },
+    "NODE_AGARGAON": {
+      "id": "NODE_AGARGAON",
+      "name": "Agargaon Intersection",
+      "lat": 23.7778,
+      "lon": 90.3755,
+      "area": "Agargaon",
+      "thana": "Sher-e-Bangla Nagar"
+    },
+    "NODE_BIJOY_SARANI": {
+      "id": "NODE_BIJOY_SARANI",
+      "name": "Bijoy Sarani Chottor",
+      "lat": 23.766,
+      "lon": 90.3875,
+      "area": "Tejgaon",
+      "thana": "Tejgaon"
+    },
+    "NODE_MOHAKHALI": {
+      "id": "NODE_MOHAKHALI",
+      "name": "Mohakhali Flyover Chottor",
+      "lat": 23.7776,
+      "lon": 90.4005,
+      "area": "Mohakhali",
+      "thana": "Banani"
+    },
+    "NODE_JAHANGIR_GATE": {
+      "id": "NODE_JAHANGIR_GATE",
+      "name": "Jahangir Gate",
+      "lat": 23.7715,
+      "lon": 90.393,
+      "area": "Tejgaon",
+      "thana": "Cantonment"
+    },
+    "NODE_TEJGAON_IND": {
+      "id": "NODE_TEJGAON_IND",
+      "name": "Tejgaon Industrial Area",
+      "lat": 23.7645,
+      "lon": 90.402,
+      "area": "Tejgaon",
+      "thana": "Tejgaon Industrial"
+    },
+    "NODE_GULSHAN_1": {
+      "id": "NODE_GULSHAN_1",
+      "name": "Gulshan 1 Circle",
+      "lat": 23.7788,
+      "lon": 90.4172,
+      "area": "Gulshan",
+      "thana": "Gulshan"
+    },
+    "NODE_GULSHAN_2": {
+      "id": "NODE_GULSHAN_2",
+      "name": "Gulshan 2 Circle",
+      "lat": 23.7925,
+      "lon": 90.4158,
+      "area": "Gulshan",
+      "thana": "Gulshan"
+    },
+    "NODE_BANANI_KAKOLI": {
+      "id": "NODE_BANANI_KAKOLI",
+      "name": "Banani Kakoli Crossing",
+      "lat": 23.7937,
+      "lon": 90.4042,
+      "area": "Banani",
+      "thana": "Banani"
+    },
+    "NODE_BANANI_11": {
+      "id": "NODE_BANANI_11",
+      "name": "Banani Road 11",
+      "lat": 23.793,
+      "lon": 90.41,
+      "area": "Banani",
+      "thana": "Banani"
+    },
+    "NODE_NOTUN_BAZAR": {
+      "id": "NODE_NOTUN_BAZAR",
+      "name": "Notun Bazar / Madani Ave",
+      "lat": 23.7985,
+      "lon": 90.4248,
+      "area": "Baridhara",
+      "thana": "Bhatara"
+    },
+    "NODE_BADDA_LINK": {
+      "id": "NODE_BADDA_LINK",
+      "name": "Badda Link Road",
+      "lat": 23.778,
+      "lon": 90.4285,
+      "area": "Badda",
+      "thana": "Badda"
+    },
+    "NODE_RAMPURA_BRIDGE": {
+      "id": "NODE_RAMPURA_BRIDGE",
+      "name": "Rampura Bridge",
+      "lat": 23.7628,
+      "lon": 90.4255,
+      "area": "Rampura",
+      "thana": "Rampura"
+    },
+    "NODE_MOUCHAK": {
+      "id": "NODE_MOUCHAK",
+      "name": "Mouchak / Malibagh Crossing",
+      "lat": 23.747,
+      "lon": 90.4115,
+      "area": "Malibagh",
+      "thana": "Shahjahanpur"
+    },
+    "NODE_PALTAN": {
+      "id": "NODE_PALTAN",
+      "name": "Paltan Intersection",
+      "lat": 23.7305,
+      "lon": 90.4102,
+      "area": "Paltan",
+      "thana": "Paltan"
+    },
+    "NODE_MOTIJHEEL": {
+      "id": "NODE_MOTIJHEEL",
+      "name": "Motijheel Shapla Chottor",
+      "lat": 23.7275,
+      "lon": 90.419,
+      "area": "Motijheel",
+      "thana": "Motijheel"
+    },
+    "NODE_SAYEDABAD": {
+      "id": "NODE_SAYEDABAD",
+      "name": "Sayedabad Bus Terminal",
+      "lat": 23.715,
+      "lon": 90.43,
+      "area": "Sayedabad",
+      "thana": "Jatrabari"
+    },
+    "NODE_JATRABARI": {
+      "id": "NODE_JATRABARI",
+      "name": "Jatrabari Chottor",
+      "lat": 23.711,
+      "lon": 90.435,
+      "area": "Jatrabari",
+      "thana": "Jatrabari"
+    },
+    "NODE_SADARGHAT": {
+      "id": "NODE_SADARGHAT",
+      "name": "Sadarghat Launch Terminal",
+      "lat": 23.708,
+      "lon": 90.412,
+      "area": "Old Dhaka",
+      "thana": "Kotwali"
+    },
+    "NODE_MIRPUR_1": {
+      "id": "NODE_MIRPUR_1",
+      "name": "Mirpur 1 Roundabout",
+      "lat": 23.795,
+      "lon": 90.354,
+      "area": "Mirpur",
+      "thana": "Mirpur"
+    },
+    "NODE_MIRPUR_10": {
+      "id": "NODE_MIRPUR_10",
+      "name": "Mirpur 10 Roundabout",
+      "lat": 23.807,
+      "lon": 90.3685,
+      "area": "Mirpur",
+      "thana": "Mirpur"
+    },
+    "NODE_MIRPUR_11": {
+      "id": "NODE_MIRPUR_11",
+      "name": "Mirpur 11 Bus Stand",
+      "lat": 23.818,
+      "lon": 90.366,
+      "area": "Mirpur",
+      "thana": "Pallabi"
+    },
+    "NODE_MIRPUR_12": {
+      "id": "NODE_MIRPUR_12",
+      "name": "Mirpur 12 Terminus",
+      "lat": 23.826,
+      "lon": 90.363,
+      "area": "Mirpur",
+      "thana": "Pallabi"
+    },
+    "NODE_KAZIPARA": {
+      "id": "NODE_KAZIPARA",
+      "name": "Kazipara Metro Station",
+      "lat": 23.793,
+      "lon": 90.3715,
+      "area": "Mirpur",
+      "thana": "Kafrul"
+    },
+    "NODE_SHEWRAPARA": {
+      "id": "NODE_SHEWRAPARA",
+      "name": "Shewrapara Metro Station",
+      "lat": 23.7845,
+      "lon": 90.3735,
+      "area": "Mirpur",
+      "thana": "Kafrul"
+    },
+    "NODE_KURIL": {
+      "id": "NODE_KURIL",
+      "name": "Kuril Flyover / Bishwa Road",
+      "lat": 23.818,
+      "lon": 90.418,
+      "area": "Kuril",
+      "thana": "Khilkhet"
+    },
+    "NODE_AIRPORT": {
+      "id": "NODE_AIRPORT",
+      "name": "Airport Roundabout",
+      "lat": 23.851,
+      "lon": 90.4075,
+      "area": "Airport",
+      "thana": "Airport"
+    },
+    "NODE_UTTARA_JASIM": {
+      "id": "NODE_UTTARA_JASIM",
+      "name": "Uttara Jasimuddin Road",
+      "lat": 23.863,
+      "lon": 90.4005,
+      "area": "Uttara",
+      "thana": "Uttara East"
+    },
+    "NODE_UTTARA_HOUSE": {
+      "id": "NODE_UTTARA_HOUSE",
+      "name": "Uttara House Building",
+      "lat": 23.873,
+      "lon": 90.398,
+      "area": "Uttara",
+      "thana": "Uttara West"
+    },
+    "NODE_GABTOLI": {
+      "id": "NODE_GABTOLI",
+      "name": "Gabtoli Bus Terminal",
+      "lat": 23.784,
+      "lon": 90.347,
+      "area": "Gabtoli",
+      "thana": "Darussalam"
+    },
+    "NODE_BERIBADH_MOH": {
+      "id": "NODE_BERIBADH_MOH",
+      "name": "Mohammadpur Beribadh Mor",
+      "lat": 23.755,
+      "lon": 90.348,
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur"
+    },
+    "NODE_NEW_MARKET": {
+      "id": "NODE_NEW_MARKET",
+      "name": "New Market Nilkhet",
+      "lat": 23.733,
+      "lon": 90.384,
+      "area": "Nilkhet",
+      "thana": "New Market"
+    },
+    "NODE_KAKRAIL": {
+      "id": "NODE_KAKRAIL",
+      "name": "Kakrail Mosque Mor",
+      "lat": 23.739,
+      "lon": 90.407,
+      "area": "Kakrail",
+      "thana": "Ramna"
+    },
+    "NODE_MOGBAZAR": {
+      "id": "NODE_MOGBAZAR",
+      "name": "Mogbazar Wireless Mor",
+      "lat": 23.75,
+      "lon": 90.405,
+      "area": "Mogbazar",
+      "thana": "Ramna"
+    },
+    "NODE_KHILGAON": {
+      "id": "NODE_KHILGAON",
+      "name": "Khilgaon Taltola",
+      "lat": 23.752,
+      "lon": 90.423,
+      "area": "Khilgaon",
+      "thana": "Khilgaon"
+    }
+  },
+  "edges": [
+    {
+      "road_id": "ROAD_01",
+      "road_name": "Mirpur Road (Science Lab to Kalabagan)",
+      "from_node": "NODE_SCIENCE_LAB",
+      "to_node": "NODE_KALABAGAN",
+      "from_node_name": "Science Laboratory Intersection",
+      "to_node_name": "Kalabagan Bus Stand",
+      "area": "Dhanmondi",
+      "thana": "New Market",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.4,
+      "length_meters": 800,
+      "lighting_condition": "High",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7395,
+          90.3835
+        ],
+        [
+          23.742917,
+          90.38118
+        ],
+        [
+          23.746,
+          90.38
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_02",
+      "road_name": "Mirpur Road (Kalabagan to Russell Square)",
+      "from_node": "NODE_KALABAGAN",
+      "to_node": "NODE_DHANMONDI_32",
+      "from_node_name": "Kalabagan Bus Stand",
+      "to_node_name": "Russell Square / Dhanmondi 32",
+      "area": "Kalabagan",
+      "thana": "Kalabagan",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.1,
+      "length_meters": 650,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.746,
+          90.38
+        ],
+        [
+          23.74828,
+          90.378668
+        ],
+        [
+          23.7511,
+          90.378
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_03",
+      "road_name": "Mirpur Road (Russell Square to Asad Gate)",
+      "from_node": "NODE_DHANMONDI_32",
+      "to_node": "NODE_ASAD_GATE",
+      "from_node_name": "Russell Square / Dhanmondi 32",
+      "to_node_name": "Asad Gate",
+      "area": "Dhanmondi",
+      "thana": "Dhanmondi",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.9,
+      "length_meters": 1100,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7511,
+          90.378
+        ],
+        [
+          23.755434,
+          90.374812
+        ],
+        [
+          23.7592,
+          90.3712
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_04",
+      "road_name": "Satmasjid Road (Dhanmondi 27 to 32 Link)",
+      "from_node": "NODE_DHANMONDI_27",
+      "to_node": "NODE_DHANMONDI_32",
+      "from_node_name": "Dhanmondi 27 (Shankar)",
+      "to_node_name": "Russell Square / Dhanmondi 32",
+      "area": "Dhanmondi",
+      "thana": "Dhanmondi",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 1.9,
+      "length_meters": 950,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7533,
+          90.3698
+        ],
+        [
+          23.752671,
+          90.373404
+        ],
+        [
+          23.7511,
+          90.378
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_05",
+      "road_name": "Dhanmondi 27 Inner Connector",
+      "from_node": "NODE_DHANMONDI_27",
+      "to_node": "NODE_MOHAMMADPUR_TOWN_HALL",
+      "from_node_name": "Dhanmondi 27 (Shankar)",
+      "to_node_name": "Mohammadpur Town Hall",
+      "area": "Dhanmondi",
+      "thana": "Dhanmondi",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 2.5,
+      "length_meters": 1050,
+      "lighting_condition": "Low",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7533,
+          90.3698
+        ],
+        [
+          23.756656,
+          90.365636
+        ],
+        [
+          23.7602,
+          90.3626
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_06",
+      "road_name": "Mirpur Road (Asad Gate to Farmgate Connector)",
+      "from_node": "NODE_ASAD_GATE",
+      "to_node": "NODE_FARMGATE",
+      "from_node_name": "Asad Gate",
+      "to_node_name": "Farmgate Intersection",
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 3.3,
+      "length_meters": 1900,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7592,
+          90.3712
+        ],
+        [
+          23.757762,
+          90.380206
+        ],
+        [
+          23.757,
+          90.3892
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_07",
+      "road_name": "Kazi Nazrul Islam Ave (Farmgate to Karwan Bazar)",
+      "from_node": "NODE_FARMGATE",
+      "to_node": "NODE_KARWAN_BAZAR",
+      "from_node_name": "Farmgate Intersection",
+      "to_node_name": "Karwan Bazar Chottor",
+      "area": "Farmgate",
+      "thana": "Tejgaon",
+      "road_type": "primary",
+      "lanes": 6,
+      "speed_limit_kmh": 40,
+      "typical_travel_time_min": 1.3,
+      "length_meters": 850,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.757,
+          90.3892
+        ],
+        [
+          23.753732,
+          90.391139
+        ],
+        [
+          23.7516,
+          90.3938
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_08",
+      "road_name": "Kazi Nazrul Islam Ave (Karwan Bazar to Shahbagh)",
+      "from_node": "NODE_KARWAN_BAZAR",
+      "to_node": "NODE_SHAHBAGH",
+      "from_node_name": "Karwan Bazar Chottor",
+      "to_node_name": "Shahbagh Intersection",
+      "area": "Karwan Bazar",
+      "thana": "Tejgaon",
+      "road_type": "primary",
+      "lanes": 6,
+      "speed_limit_kmh": 40,
+      "typical_travel_time_min": 2.2,
+      "length_meters": 1500,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7516,
+          90.3938
+        ],
+        [
+          23.74538,
+          90.394804
+        ],
+        [
+          23.7388,
+          90.3957
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_09",
+      "road_name": "Shahbagh to Science Lab (Elephant Road)",
+      "from_node": "NODE_SHAHBAGH",
+      "to_node": "NODE_SCIENCE_LAB",
+      "from_node_name": "Shahbagh Intersection",
+      "to_node_name": "Science Laboratory Intersection",
+      "area": "Shahbagh",
+      "thana": "Shahbagh",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 3.4,
+      "length_meters": 1400,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7388,
+          90.3957
+        ],
+        [
+          23.738815,
+          90.389707
+        ],
+        [
+          23.7395,
+          90.3835
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_10",
+      "road_name": "Science Lab to Nilkhet / New Market",
+      "from_node": "NODE_SCIENCE_LAB",
+      "to_node": "NODE_NEW_MARKET",
+      "from_node_name": "Science Laboratory Intersection",
+      "to_node_name": "New Market Nilkhet",
+      "area": "Dhanmondi",
+      "thana": "New Market",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 1.8,
+      "length_meters": 750,
+      "lighting_condition": "Low",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7395,
+          90.3835
+        ],
+        [
+          23.736621,
+          90.383158
+        ],
+        [
+          23.733,
+          90.384
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_11",
+      "road_name": "Airport Road (Farmgate to Bijoy Sarani)",
+      "from_node": "NODE_FARMGATE",
+      "to_node": "NODE_BIJOY_SARANI",
+      "from_node_name": "Farmgate Intersection",
+      "to_node_name": "Bijoy Sarani Chottor",
+      "area": "Farmgate",
+      "thana": "Tejgaon",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 1.5,
+      "length_meters": 1100,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.757,
+          90.3892
+        ],
+        [
+          23.761867,
+          90.388588
+        ],
+        [
+          23.766,
+          90.3875
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_12",
+      "road_name": "Jahangir Gate VIP Link",
+      "from_node": "NODE_BIJOY_SARANI",
+      "to_node": "NODE_JAHANGIR_GATE",
+      "from_node_name": "Bijoy Sarani Chottor",
+      "to_node_name": "Jahangir Gate",
+      "area": "Tejgaon",
+      "thana": "Tejgaon",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 50,
+      "typical_travel_time_min": 1.1,
+      "length_meters": 900,
+      "lighting_condition": "High",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 1,
+      "commercial_density": "Low",
+      "coordinates": [
+        [
+          23.766,
+          90.3875
+        ],
+        [
+          23.768558,
+          90.389837
+        ],
+        [
+          23.7715,
+          90.393
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_13",
+      "road_name": "Airport Road (Jahangir Gate to Mohakhali)",
+      "from_node": "NODE_JAHANGIR_GATE",
+      "to_node": "NODE_MOHAKHALI",
+      "from_node_name": "Jahangir Gate",
+      "to_node_name": "Mohakhali Flyover Chottor",
+      "area": "Tejgaon",
+      "thana": "Cantonment",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 1.5,
+      "length_meters": 1100,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7715,
+          90.393
+        ],
+        [
+          23.775099,
+          90.396554
+        ],
+        [
+          23.7776,
+          90.4005
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_14",
+      "road_name": "Bijoy Sarani to Agargaon Connector",
+      "from_node": "NODE_BIJOY_SARANI",
+      "to_node": "NODE_AGARGAON",
+      "from_node_name": "Bijoy Sarani Chottor",
+      "to_node_name": "Agargaon Intersection",
+      "area": "Tejgaon",
+      "thana": "Tejgaon",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 40,
+      "typical_travel_time_min": 2.7,
+      "length_meters": 1800,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.766,
+          90.3875
+        ],
+        [
+          23.771411,
+          90.381016
+        ],
+        [
+          23.7778,
+          90.3755
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_15",
+      "road_name": "Mohakhali to Gulshan-1 (Gulshan South Ave)",
+      "from_node": "NODE_MOHAKHALI",
+      "to_node": "NODE_GULSHAN_1",
+      "from_node_name": "Mohakhali Flyover Chottor",
+      "to_node_name": "Gulshan 1 Circle",
+      "area": "Mohakhali",
+      "thana": "Banani",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 3.1,
+      "length_meters": 1800,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7776,
+          90.4005
+        ],
+        [
+          23.778617,
+          90.408974
+        ],
+        [
+          23.7788,
+          90.4172
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_16",
+      "road_name": "Gulshan Avenue (Gulshan-1 to Gulshan-2)",
+      "from_node": "NODE_GULSHAN_1",
+      "to_node": "NODE_GULSHAN_2",
+      "from_node_name": "Gulshan 1 Circle",
+      "to_node_name": "Gulshan 2 Circle",
+      "area": "Gulshan",
+      "thana": "Gulshan",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.7,
+      "length_meters": 1550,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7788,
+          90.4172
+        ],
+        [
+          23.786019,
+          90.416776
+        ],
+        [
+          23.7925,
+          90.4158
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_17",
+      "road_name": "Kemal Ataturk Ave (Banani Kakoli to Gulshan-2)",
+      "from_node": "NODE_BANANI_KAKOLI",
+      "to_node": "NODE_GULSHAN_2",
+      "from_node_name": "Banani Kakoli Crossing",
+      "to_node_name": "Gulshan 2 Circle",
+      "area": "Banani",
+      "thana": "Banani",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.5,
+      "length_meters": 1450,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7937,
+          90.4042
+        ],
+        [
+          23.793143,
+          90.410568
+        ],
+        [
+          23.7925,
+          90.4158
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_18",
+      "road_name": "Banani Road 11 (Commercial Strip)",
+      "from_node": "NODE_BANANI_KAKOLI",
+      "to_node": "NODE_BANANI_11",
+      "from_node_name": "Banani Kakoli Crossing",
+      "to_node_name": "Banani Road 11",
+      "area": "Banani",
+      "thana": "Banani",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 1.4,
+      "length_meters": 600,
+      "lighting_condition": "High",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7937,
+          90.4042
+        ],
+        [
+          23.793204,
+          90.407162
+        ],
+        [
+          23.793,
+          90.41
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_19",
+      "road_name": "Banani 11 to Gulshan-2 Bridge Link",
+      "from_node": "NODE_BANANI_11",
+      "to_node": "NODE_GULSHAN_2",
+      "from_node_name": "Banani Road 11",
+      "to_node_name": "Gulshan 2 Circle",
+      "area": "Banani",
+      "thana": "Banani",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 1.7,
+      "length_meters": 850,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.793,
+          90.41
+        ],
+        [
+          23.793145,
+          90.413042
+        ],
+        [
+          23.7925,
+          90.4158
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_20",
+      "road_name": "Madani Avenue (Gulshan-2 to Notun Bazar)",
+      "from_node": "NODE_GULSHAN_2",
+      "to_node": "NODE_NOTUN_BAZAR",
+      "from_node_name": "Gulshan 2 Circle",
+      "to_node_name": "Notun Bazar / Madani Ave",
+      "area": "Gulshan",
+      "thana": "Gulshan",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 40,
+      "typical_travel_time_min": 1.8,
+      "length_meters": 1200,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7925,
+          90.4158
+        ],
+        [
+          23.795934,
+          90.420393
+        ],
+        [
+          23.7985,
+          90.4248
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_21",
+      "road_name": "Pragiti Sarani (Notun Bazar to Badda Link)",
+      "from_node": "NODE_NOTUN_BAZAR",
+      "to_node": "NODE_BADDA_LINK",
+      "from_node_name": "Notun Bazar / Madani Ave",
+      "to_node_name": "Badda Link Road",
+      "area": "Baridhara",
+      "thana": "Bhatara",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 4.1,
+      "length_meters": 2400,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7985,
+          90.4248
+        ],
+        [
+          23.788495,
+          90.426105
+        ],
+        [
+          23.778,
+          90.4285
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_22",
+      "road_name": "Pragiti Sarani (Badda Link to Rampura Bridge)",
+      "from_node": "NODE_BADDA_LINK",
+      "to_node": "NODE_RAMPURA_BRIDGE",
+      "from_node_name": "Badda Link Road",
+      "to_node_name": "Rampura Bridge",
+      "area": "Badda",
+      "thana": "Badda",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 3.5,
+      "length_meters": 1750,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.778,
+          90.4285
+        ],
+        [
+          23.770073,
+          90.426747
+        ],
+        [
+          23.7628,
+          90.4255
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_23",
+      "road_name": "Hatirjheel Bypass (Rampura to Karwan Bazar)",
+      "from_node": "NODE_RAMPURA_BRIDGE",
+      "to_node": "NODE_KARWAN_BAZAR",
+      "from_node_name": "Rampura Bridge",
+      "to_node_name": "Karwan Bazar Chottor",
+      "area": "Rampura",
+      "thana": "Rampura",
+      "road_type": "trunk",
+      "lanes": 4,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 4.8,
+      "length_meters": 3600,
+      "lighting_condition": "High",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Low",
+      "coordinates": [
+        [
+          23.7628,
+          90.4255
+        ],
+        [
+          23.756696,
+          90.409329
+        ],
+        [
+          23.7516,
+          90.3938
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_24",
+      "road_name": "Hatirjheel Expressway (Rampura to Mohakhali)",
+      "from_node": "NODE_RAMPURA_BRIDGE",
+      "to_node": "NODE_MOHAKHALI",
+      "from_node_name": "Rampura Bridge",
+      "to_node_name": "Mohakhali Flyover Chottor",
+      "area": "Rampura",
+      "thana": "Rampura",
+      "road_type": "trunk",
+      "lanes": 4,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 4.1,
+      "length_meters": 3100,
+      "lighting_condition": "High",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Low",
+      "coordinates": [
+        [
+          23.7628,
+          90.4255
+        ],
+        [
+          23.769721,
+          90.412734
+        ],
+        [
+          23.7776,
+          90.4005
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_25",
+      "road_name": "Tejgaon-Gulshan Link Road",
+      "from_node": "NODE_TEJGAON_IND",
+      "to_node": "NODE_GULSHAN_1",
+      "from_node_name": "Tejgaon Industrial Area",
+      "to_node_name": "Gulshan 1 Circle",
+      "area": "Tejgaon",
+      "thana": "Tejgaon Industrial",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 4.2,
+      "length_meters": 2100,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7645,
+          90.402
+        ],
+        [
+          23.771813,
+          90.409438
+        ],
+        [
+          23.7788,
+          90.4172
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_26",
+      "road_name": "Tejgaon Industrial to Farmgate Link",
+      "from_node": "NODE_TEJGAON_IND",
+      "to_node": "NODE_FARMGATE",
+      "from_node_name": "Tejgaon Industrial Area",
+      "to_node_name": "Farmgate Intersection",
+      "area": "Tejgaon",
+      "thana": "Tejgaon Industrial",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 3.8,
+      "length_meters": 1600,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7645,
+          90.402
+        ],
+        [
+          23.760594,
+          90.395251
+        ],
+        [
+          23.757,
+          90.3892
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_27",
+      "road_name": "Begum Rokeya Sarani (Agargaon to Shewrapara)",
+      "from_node": "NODE_AGARGAON",
+      "to_node": "NODE_SHEWRAPARA",
+      "from_node_name": "Agargaon Intersection",
+      "to_node_name": "Shewrapara Metro Station",
+      "area": "Agargaon",
+      "thana": "Sher-e-Bangla Nagar",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.6,
+      "length_meters": 950,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7778,
+          90.3755
+        ],
+        [
+          23.78087,
+          90.375024
+        ],
+        [
+          23.7845,
+          90.3735
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_28",
+      "road_name": "Begum Rokeya Sarani (Shewrapara to Kazipara)",
+      "from_node": "NODE_SHEWRAPARA",
+      "to_node": "NODE_KAZIPARA",
+      "from_node_name": "Shewrapara Metro Station",
+      "to_node_name": "Kazipara Metro Station",
+      "area": "Mirpur",
+      "thana": "Kafrul",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.7,
+      "length_meters": 1000,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7845,
+          90.3735
+        ],
+        [
+          23.788928,
+          90.372631
+        ],
+        [
+          23.793,
+          90.3715
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_29",
+      "road_name": "Begum Rokeya Sarani (Kazipara to Mirpur-10)",
+      "from_node": "NODE_KAZIPARA",
+      "to_node": "NODE_MIRPUR_10",
+      "from_node_name": "Kazipara Metro Station",
+      "to_node_name": "Mirpur 10 Roundabout",
+      "area": "Mirpur",
+      "thana": "Kafrul",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.7,
+      "length_meters": 1600,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.793,
+          90.3715
+        ],
+        [
+          23.799605,
+          90.370275
+        ],
+        [
+          23.807,
+          90.3685
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_30",
+      "road_name": "Mirpur Road (Shyamoli to Mirpur-1)",
+      "from_node": "NODE_SHYAMOLI",
+      "to_node": "NODE_MIRPUR_1",
+      "from_node_name": "Shyamoli Square",
+      "to_node_name": "Mirpur 1 Roundabout",
+      "area": "Shyamoli",
+      "thana": "Adabor",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 5.0,
+      "length_meters": 2900,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7712,
+          90.363
+        ],
+        [
+          23.782696,
+          90.358355
+        ],
+        [
+          23.795,
+          90.354
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_31",
+      "road_name": "Mirpur-1 to Mirpur-10 Connector",
+      "from_node": "NODE_MIRPUR_1",
+      "to_node": "NODE_MIRPUR_10",
+      "from_node_name": "Mirpur 1 Roundabout",
+      "to_node_name": "Mirpur 10 Roundabout",
+      "area": "Mirpur",
+      "thana": "Mirpur",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 3.9,
+      "length_meters": 1950,
+      "lighting_condition": "Low",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.795,
+          90.354
+        ],
+        [
+          23.801587,
+          90.361418
+        ],
+        [
+          23.807,
+          90.3685
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_32",
+      "road_name": "Mirpur-10 to Mirpur-11 Strip",
+      "from_node": "NODE_MIRPUR_10",
+      "to_node": "NODE_MIRPUR_11",
+      "from_node_name": "Mirpur 10 Roundabout",
+      "to_node_name": "Mirpur 11 Bus Stand",
+      "area": "Mirpur",
+      "thana": "Mirpur",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 2.6,
+      "length_meters": 1300,
+      "lighting_condition": "Low",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.807,
+          90.3685
+        ],
+        [
+          23.812568,
+          90.367472
+        ],
+        [
+          23.818,
+          90.366
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_33",
+      "road_name": "Mirpur-11 to Mirpur-12 Avenue",
+      "from_node": "NODE_MIRPUR_11",
+      "to_node": "NODE_MIRPUR_12",
+      "from_node_name": "Mirpur 11 Bus Stand",
+      "to_node_name": "Mirpur 12 Terminus",
+      "area": "Mirpur",
+      "thana": "Pallabi",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 1.8,
+      "length_meters": 900,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.818,
+          90.366
+        ],
+        [
+          23.822411,
+          90.364831
+        ],
+        [
+          23.826,
+          90.363
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_34",
+      "road_name": "Mirpur-1 to Gabtoli Highway",
+      "from_node": "NODE_MIRPUR_1",
+      "to_node": "NODE_GABTOLI",
+      "from_node_name": "Mirpur 1 Roundabout",
+      "to_node_name": "Gabtoli Bus Terminal",
+      "area": "Mirpur",
+      "thana": "Mirpur",
+      "road_type": "trunk",
+      "lanes": 4,
+      "speed_limit_kmh": 40,
+      "typical_travel_time_min": 2.1,
+      "length_meters": 1400,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.795,
+          90.354
+        ],
+        [
+          23.789175,
+          90.349939
+        ],
+        [
+          23.784,
+          90.347
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_35",
+      "road_name": "Mohammadpur Beribadh Outer Road",
+      "from_node": "NODE_BERIBADH_MOH",
+      "to_node": "NODE_GABTOLI",
+      "from_node_name": "Mohammadpur Beribadh Mor",
+      "to_node_name": "Gabtoli Bus Terminal",
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur",
+      "road_type": "tertiary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 8.2,
+      "length_meters": 3400,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "Low",
+      "coordinates": [
+        [
+          23.755,
+          90.348
+        ],
+        [
+          23.769279,
+          90.347221
+        ],
+        [
+          23.784,
+          90.347
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_36",
+      "road_name": "Town Hall to Beribadh Link",
+      "from_node": "NODE_MOHAMMADPUR_TOWN_HALL",
+      "to_node": "NODE_BERIBADH_MOH",
+      "from_node_name": "Mohammadpur Town Hall",
+      "to_node_name": "Mohammadpur Beribadh Mor",
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur",
+      "road_type": "tertiary",
+      "lanes": 2,
+      "speed_limit_kmh": 20,
+      "typical_travel_time_min": 4.7,
+      "length_meters": 1550,
+      "lighting_condition": "Low",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7602,
+          90.3626
+        ],
+        [
+          23.757253,
+          90.355831
+        ],
+        [
+          23.755,
+          90.348
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_37",
+      "road_name": "Dhaka-Mymensingh Hwy (Mohakhali to Banani)",
+      "from_node": "NODE_MOHAKHALI",
+      "to_node": "NODE_BANANI_KAKOLI",
+      "from_node_name": "Mohakhali Flyover Chottor",
+      "to_node_name": "Banani Kakoli Crossing",
+      "area": "Mohakhali",
+      "thana": "Banani",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 2.5,
+      "length_meters": 1850,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7776,
+          90.4005
+        ],
+        [
+          23.786102,
+          90.402128
+        ],
+        [
+          23.7937,
+          90.4042
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_38",
+      "road_name": "Dhaka-Mymensingh Hwy (Banani to Kuril)",
+      "from_node": "NODE_BANANI_KAKOLI",
+      "to_node": "NODE_KURIL",
+      "from_node_name": "Banani Kakoli Crossing",
+      "to_node_name": "Kuril Flyover / Bishwa Road",
+      "area": "Banani",
+      "thana": "Banani",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 50,
+      "typical_travel_time_min": 3.7,
+      "length_meters": 3100,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7937,
+          90.4042
+        ],
+        [
+          23.806037,
+          90.410975
+        ],
+        [
+          23.818,
+          90.418
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_39",
+      "road_name": "Airport Road (Kuril Flyover to Airport)",
+      "from_node": "NODE_KURIL",
+      "to_node": "NODE_AIRPORT",
+      "from_node_name": "Kuril Flyover / Bishwa Road",
+      "to_node_name": "Airport Roundabout",
+      "area": "Kuril",
+      "thana": "Khilkhet",
+      "road_type": "trunk",
+      "lanes": 8,
+      "speed_limit_kmh": 55,
+      "typical_travel_time_min": 4.1,
+      "length_meters": 3800,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.818,
+          90.418
+        ],
+        [
+          23.834997,
+          90.412701
+        ],
+        [
+          23.851,
+          90.4075
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_40",
+      "road_name": "Dhaka-Mymensingh Hwy (Airport to Jasimuddin)",
+      "from_node": "NODE_AIRPORT",
+      "to_node": "NODE_UTTARA_JASIM",
+      "from_node_name": "Airport Roundabout",
+      "to_node_name": "Uttara Jasimuddin Road",
+      "area": "Airport",
+      "thana": "Airport",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 2.0,
+      "length_meters": 1500,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.851,
+          90.4075
+        ],
+        [
+          23.856718,
+          90.403696
+        ],
+        [
+          23.863,
+          90.4005
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_41",
+      "road_name": "Dhaka-Mymensingh Hwy (Jasimuddin to House Building)",
+      "from_node": "NODE_UTTARA_JASIM",
+      "to_node": "NODE_UTTARA_HOUSE",
+      "from_node_name": "Uttara Jasimuddin Road",
+      "to_node_name": "Uttara House Building",
+      "area": "Uttara",
+      "thana": "Uttara East",
+      "road_type": "trunk",
+      "lanes": 6,
+      "speed_limit_kmh": 45,
+      "typical_travel_time_min": 1.6,
+      "length_meters": 1200,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.863,
+          90.4005
+        ],
+        [
+          23.868074,
+          90.398965
+        ],
+        [
+          23.873,
+          90.398
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_42",
+      "road_name": "Shahbagh to Kakrail VIP Road",
+      "from_node": "NODE_SHAHBAGH",
+      "to_node": "NODE_KAKRAIL",
+      "from_node_name": "Shahbagh Intersection",
+      "to_node_name": "Kakrail Mosque Mor",
+      "area": "Shahbagh",
+      "thana": "Shahbagh",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.1,
+      "length_meters": 1250,
+      "lighting_condition": "High",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 1,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7388,
+          90.3957
+        ],
+        [
+          23.739002,
+          90.401827
+        ],
+        [
+          23.739,
+          90.407
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_43",
+      "road_name": "Kakrail to Paltan Intersection",
+      "from_node": "NODE_KAKRAIL",
+      "to_node": "NODE_PALTAN",
+      "from_node_name": "Kakrail Mosque Mor",
+      "to_node_name": "Paltan Intersection",
+      "area": "Kakrail",
+      "thana": "Ramna",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.7,
+      "length_meters": 1000,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.739,
+          90.407
+        ],
+        [
+          23.734629,
+          90.408263
+        ],
+        [
+          23.7305,
+          90.4102
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_44",
+      "road_name": "Paltan to Motijheel Commercial Area",
+      "from_node": "NODE_PALTAN",
+      "to_node": "NODE_MOTIJHEEL",
+      "from_node_name": "Paltan Intersection",
+      "to_node_name": "Motijheel Shapla Chottor",
+      "area": "Paltan",
+      "thana": "Paltan",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 1.9,
+      "length_meters": 950,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7305,
+          90.4102
+        ],
+        [
+          23.729597,
+          90.414611
+        ],
+        [
+          23.7275,
+          90.419
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_45",
+      "road_name": "Mogbazar Flyover Road (Karwan Bazar to Mogbazar)",
+      "from_node": "NODE_KARWAN_BAZAR",
+      "to_node": "NODE_MOGBAZAR",
+      "from_node_name": "Karwan Bazar Chottor",
+      "to_node_name": "Mogbazar Wireless Mor",
+      "area": "Karwan Bazar",
+      "thana": "Tejgaon",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.1,
+      "length_meters": 1200,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7516,
+          90.3938
+        ],
+        [
+          23.750309,
+          90.398857
+        ],
+        [
+          23.75,
+          90.405
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_46",
+      "road_name": "Mogbazar to Mouchak Flyover",
+      "from_node": "NODE_MOGBAZAR",
+      "to_node": "NODE_MOUCHAK",
+      "from_node_name": "Mogbazar Wireless Mor",
+      "to_node_name": "Mouchak / Malibagh Crossing",
+      "area": "Mogbazar",
+      "thana": "Ramna",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 1.3,
+      "length_meters": 750,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.75,
+          90.405
+        ],
+        [
+          23.748032,
+          90.408403
+        ],
+        [
+          23.747,
+          90.4115
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_47",
+      "road_name": "Mouchak to Khilgaon Flyover",
+      "from_node": "NODE_MOUCHAK",
+      "to_node": "NODE_KHILGAON",
+      "from_node_name": "Mouchak / Malibagh Crossing",
+      "to_node_name": "Khilgaon Taltola",
+      "area": "Malibagh",
+      "thana": "Shahjahanpur",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 3.1,
+      "length_meters": 1300,
+      "lighting_condition": "Low",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.747,
+          90.4115
+        ],
+        [
+          23.74985,
+          90.417157
+        ],
+        [
+          23.752,
+          90.423
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_48",
+      "road_name": "Mouchak to Kakrail Road",
+      "from_node": "NODE_MOUCHAK",
+      "to_node": "NODE_KAKRAIL",
+      "from_node_name": "Mouchak / Malibagh Crossing",
+      "to_node_name": "Kakrail Mosque Mor",
+      "area": "Malibagh",
+      "thana": "Shahjahanpur",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 2.6,
+      "length_meters": 1100,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 2,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.747,
+          90.4115
+        ],
+        [
+          23.742476,
+          90.409108
+        ],
+        [
+          23.739,
+          90.407
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_49",
+      "road_name": "Motijheel to Sayedabad Bus Terminal",
+      "from_node": "NODE_MOTIJHEEL",
+      "to_node": "NODE_SAYEDABAD",
+      "from_node_name": "Motijheel Shapla Chottor",
+      "to_node_name": "Sayedabad Bus Terminal",
+      "area": "Motijheel",
+      "thana": "Motijheel",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 3.5,
+      "length_meters": 1750,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7275,
+          90.419
+        ],
+        [
+          23.721845,
+          90.424535
+        ],
+        [
+          23.715,
+          90.43
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_50",
+      "road_name": "Sayedabad to Jatrabari Flyover Entrance",
+      "from_node": "NODE_SAYEDABAD",
+      "to_node": "NODE_JATRABARI",
+      "from_node_name": "Sayedabad Bus Terminal",
+      "to_node_name": "Jatrabari Chottor",
+      "area": "Sayedabad",
+      "thana": "Jatrabari",
+      "road_type": "trunk",
+      "lanes": 4,
+      "speed_limit_kmh": 30,
+      "typical_travel_time_min": 1.5,
+      "length_meters": 750,
+      "lighting_condition": "Low",
+      "bus_stops_count": 5,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.715,
+          90.43
+        ],
+        [
+          23.713565,
+          90.432933
+        ],
+        [
+          23.711,
+          90.435
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_51",
+      "road_name": "Paltan to Sadarghat (Old Dhaka Arterial)",
+      "from_node": "NODE_PALTAN",
+      "to_node": "NODE_SADARGHAT",
+      "from_node_name": "Paltan Intersection",
+      "to_node_name": "Sadarghat Launch Terminal",
+      "area": "Paltan",
+      "thana": "Paltan",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 20,
+      "typical_travel_time_min": 7.8,
+      "length_meters": 2600,
+      "lighting_condition": "Low",
+      "bus_stops_count": 4,
+      "police_stations_nearby": 1,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7305,
+          90.4102
+        ],
+        [
+          23.718664,
+          90.411365
+        ],
+        [
+          23.708,
+          90.412
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_52",
+      "road_name": "New Market to Sadarghat Riverfront Connector",
+      "from_node": "NODE_NEW_MARKET",
+      "to_node": "NODE_SADARGHAT",
+      "from_node_name": "New Market Nilkhet",
+      "to_node_name": "Sadarghat Launch Terminal",
+      "area": "Nilkhet",
+      "thana": "New Market",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 20,
+      "typical_travel_time_min": 11.7,
+      "length_meters": 3900,
+      "lighting_condition": "Low",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.733,
+          90.384
+        ],
+        [
+          23.720718,
+          90.398044
+        ],
+        [
+          23.708,
+          90.412
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_53",
+      "road_name": "Asad Gate to Shyamoli (Mirpur Road)",
+      "from_node": "NODE_ASAD_GATE",
+      "to_node": "NODE_SHYAMOLI",
+      "from_node_name": "Asad Gate",
+      "to_node_name": "Shyamoli Square",
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur",
+      "road_type": "primary",
+      "lanes": 4,
+      "speed_limit_kmh": 35,
+      "typical_travel_time_min": 2.7,
+      "length_meters": 1600,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 3,
+      "police_stations_nearby": 0,
+      "commercial_density": "High",
+      "coordinates": [
+        [
+          23.7592,
+          90.3712
+        ],
+        [
+          23.76492,
+          90.367269
+        ],
+        [
+          23.7712,
+          90.363
+        ]
+      ]
+    },
+    {
+      "road_id": "ROAD_54",
+      "road_name": "Mohammadpur Town Hall to Asad Gate",
+      "from_node": "NODE_MOHAMMADPUR_TOWN_HALL",
+      "to_node": "NODE_ASAD_GATE",
+      "from_node_name": "Mohammadpur Town Hall",
+      "to_node_name": "Asad Gate",
+      "area": "Mohammadpur",
+      "thana": "Mohammadpur",
+      "road_type": "secondary",
+      "lanes": 2,
+      "speed_limit_kmh": 25,
+      "typical_travel_time_min": 2.2,
+      "length_meters": 900,
+      "lighting_condition": "Medium",
+      "bus_stops_count": 1,
+      "police_stations_nearby": 0,
+      "commercial_density": "Medium",
+      "coordinates": [
+        [
+          23.7602,
+          90.3626
+        ],
+        [
+          23.759234,
+          90.366822
+        ],
+        [
+          23.7592,
+          90.3712
+        ]
+      ]
+    }
+  ]
+}
