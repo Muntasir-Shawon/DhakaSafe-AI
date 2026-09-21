@@ -25,6 +25,7 @@ export const RiskMap: React.FC = () => {
   const [dayOfWeek, setDayOfWeek] = useState<string>('Friday');
   const [isRaining, setIsRaining] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [mapTheme, setMapTheme] = useState<'streets' | 'satellite' | 'dark'>('streets');
 
   const [roads, setRoads] = useState<RoadSegment[]>([]);
   const [hotspots, setHotspots] = useState<Hotspot[]>([]);
@@ -255,16 +256,34 @@ export const RiskMap: React.FC = () => {
             zoom={12}
             style={{ height: '100%', width: '100%', backgroundColor: '#0f172a' }}
           >
-            <TileLayer
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-              maxZoom={16}
-            />
-            <TileLayer
-              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
-              maxZoom={16}
-              opacity={0.8}
-            />
+            {mapTheme === 'streets' && (
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                maxZoom={19}
+              />
+            )}
+            {mapTheme === 'satellite' && (
+              <TileLayer
+                attribution='&copy; Esri, Maxar, Earthstar Geographics'
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                maxZoom={19}
+              />
+            )}
+            {mapTheme === 'dark' && (
+              <>
+                <TileLayer
+                  attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                  maxZoom={16}
+                />
+                <TileLayer
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+                  maxZoom={16}
+                  opacity={0.8}
+                />
+              </>
+            )}
 
             {/* Hotspots Layer */}
             {showHotspots && hotspots.map((h, i) => (
@@ -295,29 +314,40 @@ export const RiskMap: React.FC = () => {
             {showRoads && roads.map(road => {
               const isSelected = inspectedRoad?.road_id === road.road_id;
               return (
-                <Polyline
-                  key={road.road_id}
-                  positions={road.coordinates}
-                  eventHandlers={{
-                    click: () => handleRoadClick(road)
-                  }}
-                  pathOptions={{
-                    color: isSelected ? '#38bdf8' : road.risk_color,
-                    weight: isSelected ? 8 : 5,
-                    opacity: isSelected ? 1.0 : 0.85
-                  }}
-                >
-                  <Popup>
-                    <div className="p-1 space-y-1 text-xs">
-                      <div className="font-bold text-slate-900">{road.road_name}</div>
-                      <div className="text-slate-600">{road.area} ({road.thana})</div>
-                      <div className="font-semibold text-orange-600">
-                        Predicted Risk: {road.risk_score}/100 ({road.risk_level})
+                <React.Fragment key={road.road_id}>
+                  {/* High contrast dark casing for clear visibility on colorful maps */}
+                  <Polyline
+                    positions={road.coordinates}
+                    pathOptions={{
+                      color: isSelected ? '#0284c7' : '#090d16',
+                      weight: isSelected ? 9 : 6,
+                      opacity: 0.85
+                    }}
+                  />
+                  {/* Colored Risk Polyline */}
+                  <Polyline
+                    positions={road.coordinates}
+                    eventHandlers={{
+                      click: () => handleRoadClick(road)
+                    }}
+                    pathOptions={{
+                      color: isSelected ? '#38bdf8' : road.risk_color,
+                      weight: isSelected ? 6 : 4,
+                      opacity: 1.0
+                    }}
+                  >
+                    <Popup>
+                      <div className="p-1 space-y-1 text-xs">
+                        <div className="font-bold text-slate-900">{road.road_name}</div>
+                        <div className="text-slate-600">{road.area} ({road.thana})</div>
+                        <div className="font-semibold text-orange-600">
+                          Predicted Risk: {road.risk_score}/100 ({road.risk_level})
+                        </div>
+                        <div className="text-emerald-700">Confidence: {road.confidence}%</div>
                       </div>
-                      <div className="text-emerald-700">Confidence: {road.confidence}%</div>
-                    </div>
-                  </Popup>
-                </Polyline>
+                    </Popup>
+                  </Polyline>
+                </React.Fragment>
               );
             })}
           </MapContainer>
@@ -325,6 +355,40 @@ export const RiskMap: React.FC = () => {
           <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 shadow-lg text-xs flex items-center space-x-2">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
             <span className="text-slate-300">Live Spatial Inference</span>
+          </div>
+
+          {/* Map Theme Toggle Switcher */}
+          <div className="absolute top-4 right-4 z-[400] bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-slate-700 shadow-lg flex space-x-1 text-xs">
+            <button
+              onClick={() => setMapTheme('streets')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'streets'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🗺️ Color Map
+            </button>
+            <button
+              onClick={() => setMapTheme('satellite')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'satellite'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🛰️ Satellite
+            </button>
+            <button
+              onClick={() => setMapTheme('dark')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'dark'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🌙 Dark
+            </button>
           </div>
         </div>
 

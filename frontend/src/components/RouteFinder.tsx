@@ -58,6 +58,7 @@ export const RouteFinder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [routeData, setRouteData] = useState<RouteResponse | null>(null);
   const [selectedRouteId, setSelectedRouteId] = useState<string>('balanced');
+  const [mapTheme, setMapTheme] = useState<'streets' | 'satellite' | 'dark'>('streets');
 
   // Explainability Modal State
   const [selectedSegment, setSelectedSegment] = useState<RouteSegmentDetail | null>(null);
@@ -370,16 +371,34 @@ export const RouteFinder: React.FC = () => {
               style={{ height: '100%', width: '100%', backgroundColor: '#0f172a' }}
               zoomControl={true}
             >
-              <TileLayer
-                attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-                maxZoom={16}
-              />
-              <TileLayer
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
-                maxZoom={16}
-                opacity={0.8}
-              />
+              {mapTheme === 'streets' && (
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  maxZoom={19}
+                />
+              )}
+              {mapTheme === 'satellite' && (
+                <TileLayer
+                  attribution='&copy; Esri, Maxar, Earthstar Geographics'
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  maxZoom={19}
+                />
+              )}
+              {mapTheme === 'dark' && (
+                <>
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                    maxZoom={16}
+                  />
+                  <TileLayer
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+                    maxZoom={16}
+                    opacity={0.8}
+                  />
+                </>
+              )}
 
               <MapAutoBounds coords={activeRoute.path_coordinates} />
 
@@ -405,25 +424,36 @@ export const RouteFinder: React.FC = () => {
                 </Marker>
               )}
 
-              {/* Route Segments with Risk Colors */}
+              {/* Route Segments with Casing and Risk Colors */}
               {activeRoute.segments.map((seg, idx) => (
-                <Polyline
-                  key={`${seg.road_id}-${idx}`}
-                  positions={seg.coordinates}
-                  pathOptions={{
-                    color: seg.risk_color || activeRoute.color,
-                    weight: 6,
-                    opacity: 0.9
-                  }}
-                >
-                  <Popup>
-                    <div className="p-1 space-y-1 text-xs">
-                      <div className="font-bold text-slate-900">{seg.road_name}</div>
-                      <div className="text-slate-600">Travel: {seg.travel_time_min} mins ({seg.length_meters}m)</div>
-                      <div className="font-semibold text-orange-600">Predicted Risk: {seg.risk_score}/100</div>
-                    </div>
-                  </Popup>
-                </Polyline>
+                <React.Fragment key={`${seg.road_id}-${idx}`}>
+                  {/* High contrast dark casing line */}
+                  <Polyline
+                    positions={seg.coordinates}
+                    pathOptions={{
+                      color: '#090d16',
+                      weight: 9,
+                      opacity: 0.95
+                    }}
+                  />
+                  {/* Colored Risk Line */}
+                  <Polyline
+                    positions={seg.coordinates}
+                    pathOptions={{
+                      color: seg.risk_color || activeRoute.color,
+                      weight: 6,
+                      opacity: 1.0
+                    }}
+                  >
+                    <Popup>
+                      <div className="p-1 space-y-1 text-xs">
+                        <div className="font-bold text-slate-900">{seg.road_name}</div>
+                        <div className="text-slate-600">Travel: {seg.travel_time_min} mins ({seg.length_meters}m)</div>
+                        <div className="font-semibold text-orange-600">Predicted Risk: {seg.risk_score}/100</div>
+                      </div>
+                    </Popup>
+                  </Polyline>
+                </React.Fragment>
               ))}
             </MapContainer>
           ) : (
@@ -436,6 +466,40 @@ export const RouteFinder: React.FC = () => {
           <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 shadow-lg text-xs">
             <span className="text-slate-400">Viewing Route: </span>
             <span className="text-white font-bold">{activeRoute?.name}</span>
+          </div>
+
+          {/* Map Theme Toggle Switcher */}
+          <div className="absolute top-4 right-4 z-[400] bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-slate-700 shadow-lg flex space-x-1 text-xs">
+            <button
+              onClick={() => setMapTheme('streets')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'streets'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🗺️ Color Map
+            </button>
+            <button
+              onClick={() => setMapTheme('satellite')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'satellite'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🛰️ Satellite
+            </button>
+            <button
+              onClick={() => setMapTheme('dark')}
+              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+                mapTheme === 'dark'
+                  ? 'bg-emerald-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🌙 Dark
+            </button>
           </div>
         </div>
 
