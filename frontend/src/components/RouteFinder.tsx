@@ -15,6 +15,12 @@ import {
 } from 'lucide-react';
 import { IntersectionNode, RouteOption, RouteResponse, ShapFactor, RouteSegmentDetail } from '../types';
 import { api } from '../services/api';
+import {
+  hydrateRouteGeometries,
+  enhanceRouteWithOSRM,
+  computeClientSideFallbackRoutes,
+} from '../lib/roadGeometryEnhancer';
+import roadNetworkData from '../data/dhaka_road_network.json';
 import { ShapModal } from './ShapModal';
 import { MapAutoBounds } from './map/MapAutoBounds';
 import { MapOverlay } from './map/MapOverlay';
@@ -96,10 +102,15 @@ export const RouteFinder: React.FC = () => {
     async function loadNodes() {
       try {
         const res = await api.getNodes();
-        setNodes(res.nodes);
+        if (res && res.nodes && res.nodes.length > 0) {
+          setNodes(res.nodes);
+          return;
+        }
       } catch (err) {
-        console.error('Failed to load nodes:', err);
+        console.warn('API nodes endpoint unavailable, using bundled road network nodes:', err);
       }
+      const fallbackNodes: IntersectionNode[] = Object.values(roadNetworkData.nodes);
+      setNodes(fallbackNodes);
     }
     loadNodes();
   }, []);
@@ -112,10 +123,38 @@ export const RouteFinder: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await api.getRoutes(origin, dest, hour, dayOfWeek, isRaining ? 1 : 0);
-        setRouteData(data);
-        const hasBalanced = data.routes.some((r) => r.id === 'balanced');
-        setSelectedRouteId(hasBalanced ? 'balanced' : data.routes[0]?.id || 'fastest');
+        let rawData: RouteResponse;
+        try {
+          rawData = await api.getRoutes(origin, dest, hour, dayOfWeek, isRaining ? 1 : 0);
+        } catch (apiErr) {
+          console.warn('Backend route API unreachable, calculating client-side road route:', apiErr);
+          rawData = computeClientSideFallbackRoutes(origin, dest, hour, dayOfWeek, isRaining ? 1 : 0);
+        }
+
+        // Always guarantee real road network geometry (replacing any synthetic straight chords)
+        const hydrated = hydrateRouteGeometries(rawData);
+        setRouteData(hydrated);
+
+        const hasBalanced = hydrated.routes.some((r) => r.id === 'balanced');
+        setSelectedRouteId(hasBalanced ? 'balanced' : hydrated.routes[0]?.id || 'fastest');
+
+        // Asynchronously enhance each route with turn-by-turn road curves from OSRM
+        hydrated.routes.forEach(async (route) => {
+          try {
+            const enhanced = await enhanceRouteWithOSRM(route);
+            if (enhanced && enhanced.path_coordinates.length > route.path_coordinates.length) {
+              setRouteData((prev) => {
+                if (!prev) return prev;
+                return {
+                  ...prev,
+                  routes: prev.routes.map((r) => (r.id === enhanced.id ? enhanced : r))
+                };
+              });
+            }
+          } catch {
+            // Keep hydrated graph coordinates
+          }
+        });
       } catch (err) {
         console.error('Failed to compute route:', err);
         setError(
@@ -388,22 +427,22 @@ export const RouteFinder: React.FC = () => {
                     key={`alt-${route.id}`}
                     positions={route.path_coordinates}
                     interactive={false}
-                    pathOptions={{ color: ALT_ROUTE, weight: 3, opacity: 0.5, dashArray: '2,5' }}
+                    pathOptions={{ color: ALT_ROUTE, weight: 3.5, opacity: 0.65, dashArray: '3,6', lineCap: 'round', lineJoin: 'round' }}
                   />
                 ))}
+
+                {/* Continuous Road-Following Dark Casing */}
+                <Polyline
+                  positions={activeRoute.path_coordinates}
+                  interactive={false}
+                  pathOptions={{ color: CASING, weight: 10, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }}
+                />
 
                 <Marker position={activeRoute.path_coordinates[0]} icon={startIcon} />
                 <Marker
                   position={activeRoute.path_coordinates[activeRoute.path_coordinates.length - 1]}
                   icon={destIcon}
                 />
-                {activeRoute.segments.map((seg, idx) => (
-                  <Polyline
-                    key={`${seg.road_id}-${idx}`}
-                    positions={seg.coordinates}
-                    pathOptions={{ color: CASING, weight: 9, opacity: 0.9 }}
-                  />
-                ))}
                 {activeRoute.segments.map((seg, idx) => {
                   const highlighted = highlightedRoadId === seg.road_id;
                   return (
@@ -413,8 +452,10 @@ export const RouteFinder: React.FC = () => {
                       eventHandlers={{ click: () => setHighlightedRoadId(seg.road_id) }}
                       pathOptions={{
                         color: highlighted ? '#2dd4bf' : riskHex(seg.risk_score),
-                        weight: highlighted ? 8 : 5,
-                        opacity: 0.95,
+                        weight: highlighted ? 8 : 6,
+                        opacity: 1,
+                        lineCap: 'round',
+                        lineJoin: 'round'
                       }}
                     />
                   );
@@ -499,9 +540,16 @@ export const RouteFinder: React.FC = () => {
                       key={`alt-${route.id}`}
                       positions={route.path_coordinates}
                       interactive={false}
-                      pathOptions={{ color: ALT_ROUTE, weight: 3, opacity: 0.5, dashArray: '2,5' }}
+                      pathOptions={{ color: ALT_ROUTE, weight: 3.5, opacity: 0.65, dashArray: '3,6', lineCap: 'round', lineJoin: 'round' }}
                     />
                   ))}
+
+                  {/* Continuous Road-Following Dark Casing */}
+                  <Polyline
+                    positions={activeRoute.path_coordinates}
+                    interactive={false}
+                    pathOptions={{ color: CASING, weight: 10, opacity: 0.95, lineCap: 'round', lineJoin: 'round' }}
+                  />
 
                   <Marker position={activeRoute.path_coordinates[0]} icon={startIcon}>
                     <Popup>
@@ -519,13 +567,6 @@ export const RouteFinder: React.FC = () => {
                     </Popup>
                   </Marker>
 
-                  {activeRoute.segments.map((seg, idx) => (
-                    <Polyline
-                      key={`${seg.road_id}-${idx}`}
-                      positions={seg.coordinates}
-                      pathOptions={{ color: CASING, weight: 9, opacity: 0.9 }}
-                    />
-                  ))}
                   {activeRoute.segments.map((seg, idx) => {
                     const highlighted = highlightedRoadId === seg.road_id;
                     return (
@@ -535,8 +576,10 @@ export const RouteFinder: React.FC = () => {
                         eventHandlers={{ click: () => setHighlightedRoadId(seg.road_id) }}
                         pathOptions={{
                           color: highlighted ? '#2dd4bf' : riskHex(seg.risk_score),
-                          weight: highlighted ? 8 : 5.5,
+                          weight: highlighted ? 8 : 6,
                           opacity: 1,
+                          lineCap: 'round',
+                          lineJoin: 'round'
                         }}
                       >
                         <Popup>
