@@ -18,6 +18,7 @@ import { IntersectionNode, RouteOption, RouteResponse, ShapFactor, RouteSegmentD
 import { api } from '../services/api';
 import { ShapModal } from './ShapModal';
 import { MapAutoBounds } from './map/MapAutoBounds';
+import { MapOverlay } from './map/MapOverlay';
 import { MapChrome, ThemeLayers, type MapTheme } from './map/MapChrome';
 import { RiskLegend } from './map/RiskLegend';
 import { Button } from './ui/Button';
@@ -51,10 +52,15 @@ const destIcon = new L.DivIcon({
 const CASING = '#0b1220';
 const ALT_ROUTE = '#4a5f78';
 
+/**
+ * Zoom buttons. Reads the map through `useMap()`, so it has to be a descendant
+ * of <MapContainer> — MapOverlay is the host that provides the context and the
+ * positioning for controls drawn on top of the map.
+ */
 function ZoomControl() {
   const map = useMap();
   return (
-    <div className="absolute left-3 top-3 z-[500] flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
       <button
         type="button"
         onClick={() => map.zoomIn()}
@@ -446,6 +452,10 @@ export const RouteFinder: React.FC = () => {
                     />
                   );
                 })}
+
+                <MapOverlay className="left-3 top-3">
+                  <ZoomControl />
+                </MapOverlay>
               </MapContainer>
             ) : (
               <div className="flex h-full items-center justify-center">
@@ -453,7 +463,6 @@ export const RouteFinder: React.FC = () => {
               </div>
             )}
 
-            <ZoomControl />
             <MapChrome theme={mapTheme} onThemeChange={setMapTheme} />
 
             <button
@@ -571,6 +580,10 @@ export const RouteFinder: React.FC = () => {
                       </Polyline>
                     );
                   })}
+
+                  <MapOverlay className="left-3 top-3">
+                    <ZoomControl />
+                  </MapOverlay>
                 </MapContainer>
               ) : (
                 <div className="flex h-full items-center justify-center px-6">
@@ -578,7 +591,6 @@ export const RouteFinder: React.FC = () => {
                 </div>
               )}
 
-              <ZoomControl />
               <MapChrome theme={mapTheme} onThemeChange={setMapTheme}>
                 <LocateButton onLocate={() => setFitToken((t) => t + 1)} />
               </MapChrome>
