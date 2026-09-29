@@ -64,7 +64,7 @@ export function MapChrome({ theme, onThemeChange, children, className }: MapChro
   return (
     <div
       className={cx(
-        'pointer-events-auto absolute right-3 top-3 z-[500] flex flex-col items-end gap-2',
+        'pointer-events-auto absolute right-3 top-3 z-[var(--z-map-chrome)] flex flex-col items-end gap-2',
         className,
       )}
     >

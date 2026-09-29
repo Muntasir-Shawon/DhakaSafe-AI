@@ -85,6 +85,7 @@ export const ForecastExplainabilityView: React.FC = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
       <SectionHeading
+        as="h1"
         title="AI lab & forecast"
         hint="Research tools: area-level risk forecasting and text-to-record extraction."
       />
@@ -175,7 +176,7 @@ export const ForecastExplainabilityView: React.FC = () => {
                 }))}
                 question="Which areas are predicted highest?"
                 unit=" risk"
-                className="[&>div:first-child]:h-28"
+                plotClassName="h-28"
               />
               <Disclosure
                 summary="How is this forecast produced?"

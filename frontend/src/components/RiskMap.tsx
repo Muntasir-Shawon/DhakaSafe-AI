@@ -14,6 +14,8 @@ import { api } from '../services/api';
 import { ShapModal } from './ShapModal';
 import { MapAutoBounds } from './map/MapAutoBounds';
 import { MapChrome, ThemeLayers, type MapTheme } from './map/MapChrome';
+import { MapOverlay } from './map/MapOverlay';
+import { ZoomControl } from './map/ZoomControl';
 import { RiskLegend } from './map/RiskLegend';
 import { Field, Select } from './ui/Field';
 import { Surface } from './ui/Surface';
@@ -190,7 +192,7 @@ export const RiskMap: React.FC = () => {
             question="How does risk change over 24 hours on this road?"
             unit=" risk"
             onSelect={(d) => setHour(Number(d.key))}
-            className="[&>div:first-child]:h-24"
+            plotClassName="h-24"
           />
         ) : (
           <p className="text-meta text-ink-3">The hourly pattern for this road is not available.</p>
@@ -209,7 +211,7 @@ export const RiskMap: React.FC = () => {
   );
 
   const mapPanel = (
-    <div className="relative h-full min-h-[420px] overflow-hidden rounded-card border border-line">
+    <div className="isolate z-[var(--z-map)] relative h-full min-h-[420px] overflow-hidden rounded-card border border-line">
       <MapContainer
         center={[23.77, 90.39]}
         zoom={12}
@@ -285,9 +287,20 @@ export const RiskMap: React.FC = () => {
             </g>
           );
         })}
+
+        {/* Zoom lives inside the container, hosted by MapOverlay, so the map
+            context is always available. The card below is full width on
+            phones, so on small screens the controls start underneath it. */}
+        <MapOverlay className="left-3 top-[84px] sm:top-3">
+          <ZoomControl />
+        </MapOverlay>
       </MapContainer>
 
-      <MapChrome theme={mapTheme} onThemeChange={setMapTheme}>
+      <MapChrome
+        theme={mapTheme}
+        onThemeChange={setMapTheme}
+        className="top-[84px] sm:top-3"
+      >
         <LocateButton
           onLocate={() => {
             setInspectedRoad(null);
@@ -312,7 +325,7 @@ export const RiskMap: React.FC = () => {
       </MapChrome>
 
       {/* Time is the primary control on this page, so it floats over the map. */}
-      <div className="pointer-events-auto absolute inset-x-3 top-3 z-[500] sm:left-1/2 sm:right-auto sm:w-[420px] sm:-translate-x-1/2">
+      <div className="pointer-events-auto absolute inset-x-3 top-3 z-[var(--z-map-chrome)] sm:left-1/2 sm:right-auto sm:w-[420px] sm:-translate-x-1/2">
         <div className="rounded-card border border-line bg-surface/95 p-3 shadow-lift backdrop-blur">
           <div className="flex items-center gap-3">
             <Button
@@ -353,7 +366,7 @@ export const RiskMap: React.FC = () => {
         <button
           type="button"
           onClick={() => setFitToken((t) => t + 1)}
-          className="absolute inset-x-3 bottom-3 z-[500] flex min-h-[48px] items-center justify-center rounded-control border border-line-strong bg-surface/95 text-body font-medium text-ink shadow-lift backdrop-blur"
+          className="absolute inset-x-3 bottom-[var(--map-action-inset)] z-[var(--z-map-chrome)] flex min-h-[48px] items-center justify-center rounded-control border border-line-strong bg-surface/95 text-body font-medium text-ink shadow-lift backdrop-blur"
         >
           Fit all {roads.length} roads
         </button>
@@ -412,6 +425,13 @@ export const RiskMap: React.FC = () => {
       {isMobile ? (
         <div className="mt-4">
           <div className="h-[62dvh] min-h-[440px]">{mapPanel}</div>
+
+          {/* The legend is a key for the map colours, so it sits under the map at
+              every size rather than being a desktop-only extra. */}
+          <div className="mt-3">
+            <RiskLegend />
+          </div>
+
           <Sheet
             isOpen={Boolean(inspectedRoad)}
             onClose={() => setInspectedRoad(null)}

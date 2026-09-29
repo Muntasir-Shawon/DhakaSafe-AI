@@ -43,12 +43,14 @@ export function Surface({
 export function SectionHeading({
   title,
   hint,
+  /** Heading level. `h1` marks the page title; everything else is a section. */
+  as: Heading = 'h2',
   className,
   ...props
-}: { title: React.ReactNode; hint?: React.ReactNode } & HTMLAttributes<HTMLDivElement>) {
+}: { title: React.ReactNode; hint?: React.ReactNode; as?: 'h1' | 'h2' | 'h3' } & HTMLAttributes<HTMLDivElement>) {
   return (
     <div className={cx('space-y-0.5', className)} {...props}>
-      <h2 className="text-section font-semibold text-ink tracking-tight">{title}</h2>
+      <Heading className="text-section font-semibold text-ink tracking-tight">{title}</Heading>
       {hint ? <p className="text-meta text-ink-2">{hint}</p> : null}
     </div>
   );

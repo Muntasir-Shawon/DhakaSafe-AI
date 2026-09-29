@@ -40,7 +40,7 @@ export function TabNav({ active, onChange, variant = 'tabs' }: TabNavProps) {
                   onClick={() => onChange(tab.key)}
                   aria-current={selected ? 'page' : undefined}
                   className={cx(
-                    'flex w-full flex-col items-center justify-center gap-1 px-1 py-2.5 min-h-[54px] transition-colors',
+                    'flex w-full flex-col items-center justify-center gap-1 px-1 py-2.5 min-h-[var(--tabnav-h)] transition-colors',
                     selected ? 'text-accent' : 'text-ink-3 hover:text-ink-2',
                   )}
                 >

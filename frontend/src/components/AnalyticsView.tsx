@@ -66,6 +66,7 @@ export const AnalyticsView: React.FC = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 pb-10 pt-6 sm:px-6 lg:px-8">
       <SectionHeading
+        as="h1"
         title="Crime analytics"
         hint={`Aggregated from ${formatCount(summary.total_incidents)} reported street theft incidents, ${summary.date_range}.`}
       />

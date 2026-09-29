@@ -4,7 +4,6 @@ import {
   Polyline,
   Marker,
   Popup,
-  useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
 import {
@@ -19,6 +18,7 @@ import { api } from '../services/api';
 import { ShapModal } from './ShapModal';
 import { MapAutoBounds } from './map/MapAutoBounds';
 import { MapOverlay } from './map/MapOverlay';
+import { ZoomControl } from './map/ZoomControl';
 import { MapChrome, ThemeLayers, type MapTheme } from './map/MapChrome';
 import { RiskLegend } from './map/RiskLegend';
 import { Button } from './ui/Button';
@@ -51,39 +51,6 @@ const destIcon = new L.DivIcon({
 
 const CASING = '#0b1220';
 const ALT_ROUTE = '#4a5f78';
-
-/**
- * Zoom buttons. Reads the map through `useMap()`, so it has to be a descendant
- * of <MapContainer> — MapOverlay is the host that provides the context and the
- * positioning for controls drawn on top of the map.
- */
-function ZoomControl() {
-  const map = useMap();
-  return (
-    <div className="flex flex-col gap-2">
-      <button
-        type="button"
-        onClick={() => map.zoomIn()}
-        aria-label="Zoom in"
-        className="flex h-9 w-9 items-center justify-center rounded-control border border-line bg-surface/95 text-ink-2 shadow-lift backdrop-blur transition-colors hover:text-ink"
-      >
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        onClick={() => map.zoomOut()}
-        aria-label="Zoom out"
-        className="flex h-9 w-9 items-center justify-center rounded-control border border-line bg-surface/95 text-ink-2 shadow-lift backdrop-blur transition-colors hover:text-ink"
-      >
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-          <path d="M5 12h14" />
-        </svg>
-      </button>
-    </div>
-  );
-}
 
 function LocateButton({ onLocate }: { onLocate: () => void }) {
   return (
@@ -400,7 +367,7 @@ export const RouteFinder: React.FC = () => {
       {/* Desktop: map leads, panel beside it. Mobile: sheet over the map. */}
       {isMobile ? (
         <div className="mt-4">
-          <div className="relative h-[58dvh] min-h-[380px] overflow-hidden rounded-card border border-line">
+          <div className="isolate z-[var(--z-map)] relative h-[58dvh] min-h-[380px] overflow-hidden rounded-card border border-line">
             {activeRoute ? (
               <MapContainer
                 center={[23.77, 90.39]}
@@ -468,7 +435,7 @@ export const RouteFinder: React.FC = () => {
             <button
               type="button"
               onClick={() => setSheetOpen(true)}
-              className="absolute inset-x-3 bottom-3 z-[500] flex min-h-[52px] items-center justify-between gap-3 rounded-control border border-line-strong bg-surface/95 px-4 text-left shadow-lift backdrop-blur"
+              className="absolute inset-x-3 bottom-[var(--map-action-inset)] z-[var(--z-map-chrome)] flex min-h-[52px] items-center justify-between gap-3 rounded-control border border-line-strong bg-surface/95 px-4 text-left shadow-lift backdrop-blur"
             >
               <span className="min-w-0">
                 <span className="block truncate text-body font-semibold text-ink">
@@ -482,6 +449,12 @@ export const RouteFinder: React.FC = () => {
               </span>
               {activeRoute && <RiskPill score={activeRoute.average_risk_score} />}
             </button>
+          </div>
+
+          {/* The legend is a key for the map colours, so it sits under the map at
+              every size rather than being a desktop-only extra. */}
+          <div className="mt-3">
+            <RiskLegend />
           </div>
 
           <Sheet
@@ -509,7 +482,7 @@ export const RouteFinder: React.FC = () => {
       ) : (
         <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-5">
           <div className="lg:col-span-3">
-            <div className="relative h-[calc(100dvh-16rem)] min-h-[560px] overflow-hidden rounded-card border border-line">
+            <div className="isolate z-[var(--z-map)] relative h-[calc(100dvh-16rem)] min-h-[560px] overflow-hidden rounded-card border border-line">
               {activeRoute ? (
                 <MapContainer
                   center={[23.77, 90.39]}
@@ -597,7 +570,7 @@ export const RouteFinder: React.FC = () => {
 
               {/* Route name overlay: a label, not a badge. */}
               {activeRoute && (
-                <div className="pointer-events-none absolute left-1/2 top-3 z-[500] -translate-x-1/2">
+                <div className="pointer-events-none absolute left-1/2 top-3 z-[var(--z-map-chrome)] -translate-x-1/2">
                   <div className="rounded-control border border-line bg-surface/95 px-3 py-1.5 text-center shadow-lift backdrop-blur">
                     <p className="text-meta font-medium text-ink">{activeRoute.name}</p>
                     <p className="text-meta text-ink-3 tabular">

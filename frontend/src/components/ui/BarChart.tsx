@@ -20,6 +20,8 @@ interface BarChartProps {
   onSelect?: (datum: BarDatum) => void;
   className?: string;
   barClassName?: string;
+  /** Height of the plot area, e.g. `h-24`. */
+  plotClassName?: string;
   max?: number;
 }
 
@@ -35,6 +37,7 @@ export function BarChart({
   onSelect,
   className,
   barClassName,
+  plotClassName,
   max,
 }: BarChartProps) {
   const [active, setActive] = useState<string | null>(null);
@@ -45,65 +48,78 @@ export function BarChart({
     <figure className={cx('space-y-3', className)}>
       <figcaption className="visually-hidden">{question}</figcaption>
 
-      <div
-        className="flex h-40 items-end gap-1.5"
-        role="list"
-        aria-label={question}
-        onMouseLeave={() => setActive(null)}
-      >
-        {data.map((d) => {
-          const pct = Math.max(3, Math.round((d.value / ceiling) * 100));
-          const isHot = highlightFrom !== undefined && d.value >= highlightFrom;
-          const hot = isHot ? getRiskLevel(d.value) : null;
-          const isActive = active === String(d.key);
-          const interactive = Boolean(onSelect);
+      {/*
+        The plot has a definite height, and each bar is positioned against the
+        bottom of its column. A percentage height needs a definite parent to
+        resolve against: the columns used to be auto-height, which collapsed
+        every bar to zero. The row also scrolls sideways when the columns no
+        longer fit — 24 bars in a phone-width card are ~7px each, which is too
+        thin to read or tap, and scrolling keeps all 24 values on screen.
+      */}
+      <div className="overflow-x-auto overflow-y-hidden py-1">
+        <div
+          className={cx(
+            'relative flex min-w-max items-stretch gap-1.5',
+            plotClassName ?? 'h-40',
+          )}
+          role="list"
+          aria-label={question}
+          onMouseLeave={() => setActive(null)}
+        >
+          {data.map((d) => {
+            const pct = Math.max(3, Math.round((d.value / ceiling) * 100));
+            const isHot = highlightFrom !== undefined && d.value >= highlightFrom;
+            const hot = isHot ? getRiskLevel(d.value) : null;
+            const isActive = active === String(d.key);
+            const interactive = Boolean(onSelect);
 
-          const bar = (
-            <div
-              className={cx(
-                'w-full rounded-t-sm transition-all duration-200 ease-standard',
-                hot ? hot.bar : 'bg-line-strong',
-                !isHot && 'hover:bg-ink-3/60',
-                isActive && 'opacity-100',
-                !isActive && 'opacity-85',
-                barClassName,
-              )}
-              style={{ height: `${pct}%` }}
-            />
-          );
-
-          if (!interactive) {
-            return (
+            const bar = (
               <div
+                className={cx(
+                  'absolute bottom-0 left-0 w-full rounded-t-sm transition-all duration-200 ease-standard',
+                  hot ? hot.bar : 'bg-line-strong',
+                  !isHot && 'hover:bg-ink-3/60',
+                  isActive && 'opacity-100',
+                  !isActive && 'opacity-85',
+                  barClassName,
+                )}
+                style={{ height: `${pct}%` }}
+              />
+            );
+
+            if (!interactive) {
+              return (
+                <div
+                  key={d.key}
+                  role="listitem"
+                  className="group relative h-full min-w-[18px] flex-1"
+                  onMouseEnter={() => setActive(String(d.key))}
+                  onFocus={() => setActive(String(d.key))}
+                  tabIndex={0}
+                  aria-label={`${d.label}: ${d.value}${unit}`}
+                >
+                  {bar}
+                </div>
+              );
+            }
+
+            return (
+              <button
                 key={d.key}
+                type="button"
                 role="listitem"
-                className="group relative flex-1"
+                className="group relative h-full min-w-[18px] flex-1 cursor-pointer rounded-sm"
                 onMouseEnter={() => setActive(String(d.key))}
                 onFocus={() => setActive(String(d.key))}
-                tabIndex={0}
+                onBlur={() => setActive(null)}
+                onClick={() => onSelect?.(d)}
                 aria-label={`${d.label}: ${d.value}${unit}`}
               >
                 {bar}
-              </div>
+              </button>
             );
-          }
-
-          return (
-            <button
-              key={d.key}
-              type="button"
-              role="listitem"
-              className="group relative flex-1 cursor-pointer rounded-sm"
-              onMouseEnter={() => setActive(String(d.key))}
-              onFocus={() => setActive(String(d.key))}
-              onBlur={() => setActive(null)}
-              onClick={() => onSelect?.(d)}
-              aria-label={`${d.label}: ${d.value}${unit}`}
-            >
-              {bar}
-            </button>
-          );
-        })}
+          })}
+        </div>
       </div>
 
       {/* Axis labels: show a readable subset rather than 24 cramped ticks. */}

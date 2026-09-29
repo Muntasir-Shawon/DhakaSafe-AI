@@ -184,6 +184,45 @@
 }
 
 /* ==========================================================================
+   Stacking contract
+   ==========================================================================
+   Leaflet positions its control containers at `z-index: 1000`, and a map box is
+   not a stacking context on its own, so those values used to compete directly
+   with the app chrome: the attribution could paint over the mobile tab bar and
+   swallow taps meant for it.
+
+   Map panels therefore carry `isolate z-[var(--z-map)]`. `isolate` traps every
+   Leaflet layer inside the panel, and `--z-map` places the map as a whole below
+   the navigation (850), header (870), sheet (880) and modal (900). Controls
+   that float on a map use `z-[var(--z-map-chrome)]` to stay above Leaflet's own
+   control layer while still being trapped inside the map.
+   ========================================================================== */
+
+:root {
+  /* The map panel is the only element that must never outrank the app chrome. */
+  --z-map: 10;
+  /* Leaflet gives its control containers 1000, so in-map app chrome is above
+     that — but still trapped inside the isolated map panel. */
+  --z-map-chrome: 1100;
+  /* Height of the fixed mobile tab bar, shared so the bar and everything that
+     has to clear it can never drift apart. */
+  --tabnav-h: 61px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* Where the map's own bottom controls start. On small screens the tab bar is
+     fixed over the bottom of the map, so Leaflet's bottom controls (the
+     attribution) are lifted clear of it rather than hidden. */
+  --map-bottom-inset: calc(var(--tabnav-h) + var(--safe-bottom) + 6px);
+  /* Full-width action bars on a map sit above the lifted attribution. */
+  --map-action-inset: calc(var(--map-bottom-inset) + 2.75rem);
+}
+
+@media (max-width: 1023px) {
+  .leaflet-bottom {
+    bottom: var(--map-bottom-inset);
+  }
+}
+
+/* ==========================================================================
    Components: Leaflet overrides
    ========================================================================== */
 
@@ -222,15 +261,22 @@
   color: var(--color-ink) !important;
 }
 
+/* The attribution stays exactly where Leaflet puts it — the credit line is
+   required — but its links are padded up to the 24px minimum target size
+   (WCAG 2.5.8) instead of sitting as 12px-tall text. */
 .leaflet-control-attribution {
   background: rgb(11 18 32 / 0.82) !important;
   color: var(--color-ink-3) !important;
   font-size: 10px !important;
-  padding: 2px 6px !important;
+  padding: 3px 6px !important;
 }
 
 .leaflet-control-attribution a {
   color: var(--color-ink-2) !important;
+  display: inline-block;
+  line-height: 18px;
+  min-height: 24px;
+  padding: 3px 2px;
 }
 
 .leaflet-bar,
