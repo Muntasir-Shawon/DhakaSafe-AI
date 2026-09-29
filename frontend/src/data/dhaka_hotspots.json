@@ -1,0 +1,194 @@
+[
+  {
+    "area": "Mirpur",
+    "center_lat": 23.80211,
+    "center_lon": 90.36229,
+    "radius_meters": 1244,
+    "incident_count": 227,
+    "severity": "CRITICAL",
+    "color": "#ef4444",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Firearm / Pistol"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Mirpur"
+  },
+  {
+    "area": "Dhanmondi",
+    "center_lat": 23.74704,
+    "center_lon": 90.37564,
+    "radius_meters": 989,
+    "incident_count": 154,
+    "severity": "CRITICAL",
+    "color": "#ef4444",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Dhanmondi"
+  },
+  {
+    "area": "Mohammadpur",
+    "center_lat": 23.76381,
+    "center_lon": 90.35829,
+    "radius_meters": 786,
+    "incident_count": 96,
+    "severity": "HIGH",
+    "color": "#f97316",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Mohammadpur"
+  },
+  {
+    "area": "Tejgaon",
+    "center_lat": 23.768,
+    "center_lon": 90.39824,
+    "radius_meters": 786,
+    "incident_count": 96,
+    "severity": "HIGH",
+    "color": "#f97316",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Tejgaon"
+  },
+  {
+    "area": "Farmgate",
+    "center_lat": 23.75555,
+    "center_lon": 90.39105,
+    "radius_meters": 712,
+    "incident_count": 75,
+    "severity": "HIGH",
+    "color": "#f97316",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Tejgaon"
+  },
+  {
+    "area": "Motijheel",
+    "center_lat": 23.72155,
+    "center_lon": 90.42425,
+    "radius_meters": 684,
+    "incident_count": 67,
+    "severity": "HIGH",
+    "color": "#f97316",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Motijheel"
+  },
+  {
+    "area": "Sayedabad",
+    "center_lat": 23.71291,
+    "center_lon": 90.43259,
+    "radius_meters": 667,
+    "incident_count": 62,
+    "severity": "HIGH",
+    "color": "#f97316",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Jatrabari"
+  },
+  {
+    "area": "Badda",
+    "center_lat": 23.76968,
+    "center_lon": 90.4268,
+    "radius_meters": 649,
+    "incident_count": 57,
+    "severity": "MODERATE",
+    "color": "#eab308",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Badda"
+  },
+  {
+    "area": "Baridhara",
+    "center_lat": 23.78824,
+    "center_lon": 90.42669,
+    "radius_meters": 635,
+    "incident_count": 53,
+    "severity": "MODERATE",
+    "color": "#eab308",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Bhatara"
+  },
+  {
+    "area": "Shyamoli",
+    "center_lat": 23.78214,
+    "center_lon": 90.35885,
+    "radius_meters": 597,
+    "incident_count": 42,
+    "severity": "MODERATE",
+    "color": "#eab308",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Firearm / Pistol"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Adabor"
+  },
+  {
+    "area": "Paltan",
+    "center_lat": 23.72162,
+    "center_lon": 90.41205,
+    "radius_meters": 586,
+    "incident_count": 39,
+    "severity": "MODERATE",
+    "color": "#eab308",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Unarmed / Speed snatch"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Paltan"
+  },
+  {
+    "area": "Malibagh",
+    "center_lat": 23.74824,
+    "center_lon": 90.41576,
+    "radius_meters": 579,
+    "incident_count": 37,
+    "severity": "MODERATE",
+    "color": "#eab308",
+    "primary_crime": "Snatching",
+    "common_weapons": [
+      "Sharp knife (Chhuri)",
+      "Firearm / Pistol"
+    ],
+    "peak_hours": "21:00 - 01:00",
+    "thana": "Shahjahanpur"
+  }
+]

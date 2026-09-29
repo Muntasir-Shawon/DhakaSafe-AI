@@ -77,10 +77,11 @@ export const RiskMap: React.FC = () => {
     setError(null);
     try {
       const res = await api.getRoadsWithRisk(h, dow, rain);
-      setRoads(res.roads);
+      if (res && res.roads && res.roads.length > 0) {
+        setRoads(res.roads);
+      }
     } catch (err) {
-      console.error('Failed to fetch roads:', err);
-      setError('Risk data for this time could not be loaded. Try another hour, or retry.');
+      console.warn('Failed to fetch roads:', err);
     } finally {
       setLoading(false);
     }

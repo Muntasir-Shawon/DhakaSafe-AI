@@ -10,8 +10,27 @@ import {
   AnalyticsSummary,
   NlpExtractionResult
 } from '../types';
+import {
+  getClientSideRoadsWithRisk,
+  getClientSideHotspots,
+  getClientSideRoadTimeline,
+  getClientSideShapFactors
+} from '../lib/riskFallback';
+import roadNetworkData from '../data/dhaka_road_network.json';
 
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://127.0.0.1:8000/api';
+function getApiBaseUrl(): string {
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL as string;
+  }
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return 'http://127.0.0.1:8000/api';
+    }
+  }
+  return 'https://dhakasafe-ai-backend.onrender.com/api';
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, options);
@@ -25,7 +44,14 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
 export const api = {
   // Navigation nodes
   async getNodes(): Promise<{ nodes: IntersectionNode[]; total: number }> {
-    return fetchJson(`${API_BASE_URL}/nodes`);
+    try {
+      const data = await fetchJson<{ nodes: IntersectionNode[]; total: number }>(`${API_BASE_URL}/nodes`);
+      if (data && data.nodes && data.nodes.length > 0) return data;
+    } catch (err) {
+      console.warn('Backend /nodes endpoint unavailable, using bundled road network nodes:', err);
+    }
+    const nodes = Object.values(roadNetworkData.nodes) as unknown as IntersectionNode[];
+    return { nodes, total: nodes.length };
   },
 
   // Calculate routes (Fastest, Balanced, Safest)
@@ -63,7 +89,15 @@ export const api = {
     dayOfWeek: string = 'Friday',
     rain: number = 0
   ): Promise<{ hour: number; day_of_week: string; rain: boolean; total_roads: number; roads: RoadSegment[] }> {
-    return fetchJson(`${API_BASE_URL}/roads?hour=${hour}&day_of_week=${encodeURIComponent(dayOfWeek)}&rain=${rain}`);
+    try {
+      const data = await fetchJson<{ hour: number; day_of_week: string; rain: boolean; total_roads: number; roads: RoadSegment[] }>(
+        `${API_BASE_URL}/roads?hour=${hour}&day_of_week=${encodeURIComponent(dayOfWeek)}&rain=${rain}`
+      );
+      if (data && data.roads && data.roads.length > 0) return data;
+    } catch (err) {
+      console.warn('Backend /roads endpoint unavailable, calculating client-side road risk map:', err);
+    }
+    return getClientSideRoadsWithRisk(hour, dayOfWeek, rain);
   },
 
   // Road timeline (24-hour diurnal curve)
@@ -72,7 +106,15 @@ export const api = {
     dayOfWeek: string = 'Friday',
     rain: number = 0
   ): Promise<{ road_id: string; road_name: string; area: string; thana: string; timeline: RoadTimelinePoint[] }> {
-    return fetchJson(`${API_BASE_URL}/road/${roadId}/timeline?day_of_week=${encodeURIComponent(dayOfWeek)}&rain=${rain}`);
+    try {
+      const data = await fetchJson<{ road_id: string; road_name: string; area: string; thana: string; timeline: RoadTimelinePoint[] }>(
+        `${API_BASE_URL}/road/${roadId}/timeline?day_of_week=${encodeURIComponent(dayOfWeek)}&rain=${rain}`
+      );
+      if (data && data.timeline && data.timeline.length > 0) return data;
+    } catch (err) {
+      console.warn('Backend timeline endpoint unavailable, using client-side road timeline:', err);
+    }
+    return getClientSideRoadTimeline(roadId, dayOfWeek, rain);
   },
 
   // Explain risk prediction with SHAP
@@ -82,16 +124,25 @@ export const api = {
     dayOfWeek: string = 'Friday',
     rain: number = 0
   ): Promise<{ prediction: RoadSegment; explanation_factors: ShapFactor[]; summary: string }> {
-    return fetchJson(`${API_BASE_URL}/predict-risk`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        road_id: roadId,
-        hour,
-        day_of_week: dayOfWeek,
-        rain
-      })
-    });
+    try {
+      const data = await fetchJson<{ prediction: RoadSegment; explanation_factors: ShapFactor[]; summary: string }>(
+        `${API_BASE_URL}/predict-risk`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            road_id: roadId,
+            hour,
+            day_of_week: dayOfWeek,
+            rain
+          })
+        }
+      );
+      if (data && data.explanation_factors && data.explanation_factors.length > 0) return data;
+    } catch (err) {
+      console.warn('Backend predict-risk endpoint unavailable, using client-side SHAP factors:', err);
+    }
+    return getClientSideShapFactors(roadId, hour, dayOfWeek, rain);
   },
 
   // Forecast for Dhaka neighborhoods
@@ -123,7 +174,13 @@ export const api = {
 
   // Hotspots (DBSCAN clusters)
   async getHotspots(): Promise<{ hotspots: Hotspot[] }> {
-    return fetchJson(`${API_BASE_URL}/hotspots`);
+    try {
+      const data = await fetchJson<{ hotspots: Hotspot[] }>(`${API_BASE_URL}/hotspots`);
+      if (data && data.hotspots && data.hotspots.length > 0) return data;
+    } catch (err) {
+      console.warn('Backend /hotspots endpoint unavailable, using bundled hotspots:', err);
+    }
+    return { hotspots: getClientSideHotspots() };
   },
 
   // Analytics summary
