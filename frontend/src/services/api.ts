@@ -30,11 +30,15 @@ export const api = {
 
   // Calculate routes (Fastest, Balanced, Safest)
   async getRoutes(
-    originNode: string,
-    destNode: string,
+    originNode?: string,
+    destNode?: string,
     hour: number = 22,
     dayOfWeek: string = 'Friday',
-    rain: number = 0
+    rain: number = 0,
+    originLat?: number,
+    originLon?: number,
+    destLat?: number,
+    destLon?: number
   ): Promise<RouteResponse> {
     return fetchJson(`${API_BASE_URL}/route`, {
       method: 'POST',
@@ -42,6 +46,10 @@ export const api = {
       body: JSON.stringify({
         origin_node: originNode,
         destination_node: destNode,
+        origin_lat: originLat,
+        origin_lon: originLon,
+        dest_lat: destLat,
+        dest_lon: destLon,
         hour,
         day_of_week: dayOfWeek,
         rain

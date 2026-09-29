@@ -10,8 +10,12 @@ from app.ml.risk_predictor import get_road_network
 router = APIRouter(tags=["Navigation"])
 
 class RouteRequest(BaseModel):
-    origin_node: str
-    destination_node: str
+    origin_node: Optional[str] = None
+    destination_node: Optional[str] = None
+    origin_lat: Optional[float] = None
+    origin_lon: Optional[float] = None
+    dest_lat: Optional[float] = None
+    dest_lon: Optional[float] = None
     hour: int = 22
     day_of_week: str = "Friday"
     rain: int = 0
@@ -39,15 +43,20 @@ def get_navigation_nodes():
 @router.post("/route")
 def compute_route(req: RouteRequest):
     """
-    Calculates Fastest, Balanced, and Safest routes between origin and destination.
+    Calculates Fastest, Balanced, and Safest routes between origin and destination with real road constraints.
     """
     try:
+        origin_coords = (req.origin_lat, req.origin_lon) if (req.origin_lat is not None and req.origin_lon is not None) else None
+        dest_coords = (req.dest_lat, req.dest_lon) if (req.dest_lat is not None and req.dest_lon is not None) else None
+
         result = find_routes(
             origin_node=req.origin_node,
             dest_node=req.destination_node,
             hour=req.hour,
             day_of_week=req.day_of_week,
-            rain=req.rain
+            rain=req.rain,
+            origin_coords=origin_coords,
+            dest_coords=dest_coords
         )
         return result
     except ValueError as e:

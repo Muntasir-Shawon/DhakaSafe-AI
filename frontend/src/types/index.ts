@@ -65,6 +65,8 @@ export interface RouteResponse {
   destination_node: string;
   origin_name: string;
   destination_name: string;
+  origin_coords?: [number, number];
+  destination_coords?: [number, number];
   hour: number;
   day_of_week: string;
   rain: boolean;
