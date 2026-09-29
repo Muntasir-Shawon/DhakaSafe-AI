@@ -1,58 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polyline, Circle, Popup, Marker } from 'react-leaflet';
-import L from 'leaflet';
+import { useCallback, useEffect, useState } from 'react';
+import { MapContainer, Polyline, Circle, Popup } from 'react-leaflet';
 import {
-  Clock,
   Play,
   Pause,
   CloudRain,
   Sun,
   Layers,
-  Sparkles,
-  AlertTriangle,
-  Info,
-  Calendar,
+  LocateFixed,
   X,
-  TrendingUp,
-  ShieldCheck
 } from 'lucide-react';
 import { RoadSegment, Hotspot, RoadTimelinePoint, ShapFactor } from '../types';
 import { api } from '../services/api';
 import { ShapModal } from './ShapModal';
+import { MapAutoBounds } from './map/MapAutoBounds';
+import { MapChrome, ThemeLayers, type MapTheme } from './map/MapChrome';
+import { RiskLegend } from './map/RiskLegend';
+import { Field, Select } from './ui/Field';
+import { Surface } from './ui/Surface';
+import { RiskMeter } from './ui/RiskMeter';
+import { BarChart } from './ui/BarChart';
+import { Button } from './ui/Button';
+import { Sheet } from './ui/Sheet';
+import { ErrorState, SkeletonBlock } from './ui/StateViews';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { cx } from '../lib/cx';
+import { getRiskLevel, riskHex, describeLighting, describeRoadType } from '../lib/risk';
+import { DAYS, daypartOf, dayNote, formatCount, formatMeters, hour12, hour24 } from '../lib/format';
+
+const CASING = '#0b1220';
+const SELECTED = '#2dd4bf';
+
+const allRoads = (roads: RoadSegment[]): [number, number][] =>
+  roads.flatMap((r) => r.coordinates);
 
 export const RiskMap: React.FC = () => {
+  const isMobile = useMediaQuery('(max-width: 1023px)');
+
   const [hour, setHour] = useState<number>(22);
   const [dayOfWeek, setDayOfWeek] = useState<string>('Friday');
   const [isRaining, setIsRaining] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [mapTheme, setMapTheme] = useState<'streets' | 'satellite' | 'dark'>('streets');
+  const [mapTheme, setMapTheme] = useState<MapTheme>('streets');
 
   const [roads, setRoads] = useState<RoadSegment[]>([]);
   const [hotspots, setHotspots] = useState<Hotspot[]>([]);
   const [showHotspots, setShowHotspots] = useState<boolean>(true);
-  const [showRoads, setShowRoads] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [fitToken, setFitToken] = useState<number>(0);
 
-  // Inspector state
   const [inspectedRoad, setInspectedRoad] = useState<RoadSegment | null>(null);
   const [roadTimeline, setRoadTimeline] = useState<RoadTimelinePoint[]>([]);
   const [loadingTimeline, setLoadingTimeline] = useState<boolean>(false);
 
-  // SHAP modal state
   const [isShapOpen, setIsShapOpen] = useState<boolean>(false);
   const [shapFactors, setShapFactors] = useState<ShapFactor[]>([]);
+  const [loadingShap, setLoadingShap] = useState<boolean>(false);
+  const [shapConfidence, setShapConfidence] = useState<number | null>(null);
 
-  // Fetch roads with dynamic risk
-  const fetchRoads = async (h = hour, dow = dayOfWeek, rain = isRaining) => {
-    try {
-      const res = await api.getRoadsWithRisk(h, dow, rain ? 1 : 0);
-      setRoads(res.roads);
-    } catch (err) {
-      console.error('Failed to fetch roads:', err);
-    }
-  };
-
-  // Fetch hotspots once
   useEffect(() => {
     async function loadHotspots() {
       try {
@@ -65,23 +70,30 @@ export const RiskMap: React.FC = () => {
     loadHotspots();
   }, []);
 
-  // Fetch on hour/day/rain change
-  useEffect(() => {
-    fetchRoads(hour, dayOfWeek, isRaining);
-  }, [hour, dayOfWeek, isRaining]);
-
-  // Auto-play time slider simulation (Dynamic Risk demonstration)
-  useEffect(() => {
-    let timer: any;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        setHour(prev => (prev + 1) % 24);
-      }, 1400);
+  const fetchRoads = useCallback(async (h: number, dow: string, rain: number) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await api.getRoadsWithRisk(h, dow, rain);
+      setRoads(res.roads);
+    } catch (err) {
+      console.error('Failed to fetch roads:', err);
+      setError('Risk data for this time could not be loaded. Try another hour, or retry.');
+    } finally {
+      setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    fetchRoads(hour, dayOfWeek, isRaining ? 1 : 0);
+  }, [hour, dayOfWeek, isRaining, fetchRoads]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    const timer = setInterval(() => setHour((prev) => (prev + 1) % 24), 1400);
     return () => clearInterval(timer);
   }, [isPlaying]);
 
-  // Handle clicking a road segment
   const handleRoadClick = async (road: RoadSegment) => {
     setInspectedRoad(road);
     setLoadingTimeline(true);
@@ -90,444 +102,371 @@ export const RiskMap: React.FC = () => {
       setRoadTimeline(res.timeline);
     } catch (err) {
       console.error('Failed to fetch timeline:', err);
+      setRoadTimeline([]);
     } finally {
       setLoadingTimeline(false);
     }
   };
 
-  // Inspect SHAP
   const handleOpenShap = async () => {
     if (!inspectedRoad) return;
     setIsShapOpen(true);
+    setLoadingShap(true);
+    setShapConfidence(null);
     try {
       const res = await api.explainRisk(inspectedRoad.road_id, hour, dayOfWeek, isRaining ? 1 : 0);
       setShapFactors(res.explanation_factors);
+      setShapConfidence(res.prediction?.confidence ?? null);
     } catch (err) {
       console.error('Failed to explain risk:', err);
+    } finally {
+      setLoadingShap(false);
     }
   };
 
-  const getRiskColor = (score: number) => {
-    if (score >= 80) return '#ef4444'; // Red
-    if (score >= 60) return '#f97316'; // Orange
-    if (score >= 35) return '#eab308'; // Yellow
-    return '#10b981'; // Green
-  };
-
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Header and Spatio-Temporal Controls */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center space-x-2">
-              <span>Spatio-Temporal Dynamic Risk Map</span>
-              <span className="text-xs bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
-                Point 6: Dynamic Scrubber
-              </span>
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-400">
-              Risk is not static. Scrub through hours to observe how street theft probabilities evolve across Dhaka.
-            </p>
-          </div>
-
-          {/* Layer and Weather Toggles */}
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => setShowHotspots(!showHotspots)}
-              className={`text-xs px-3 py-1.5 rounded-xl border flex items-center space-x-1.5 transition ${
-                showHotspots
-                  ? 'bg-orange-500/20 text-orange-300 border-orange-500/40'
-                  : 'bg-slate-800 text-slate-400 border-slate-700'
-              }`}
-            >
-              <Layers className="h-3.5 w-3.5" />
-              <span>Hotspot Clusters</span>
-            </button>
-
-            <button
-              onClick={() => setIsRaining(!isRaining)}
-              className={`text-xs px-3 py-1.5 rounded-xl border flex items-center space-x-1.5 transition ${
-                isRaining
-                  ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
-                  : 'bg-slate-800 text-slate-400 border-slate-700'
-              }`}
-            >
-              {isRaining ? <CloudRain className="h-3.5 w-3.5 text-blue-400" /> : <Sun className="h-3.5 w-3.5 text-amber-400" />}
-              <span>{isRaining ? 'Rain Active (+Risk)' : 'Clear Sky'}</span>
-            </button>
-          </div>
+  const inspector = inspectedRoad && (
+    <div className="space-y-4">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-meta text-ink-3">{inspectedRoad.area} · {inspectedRoad.thana}</p>
+          <h3 className="text-section font-semibold tracking-tight text-ink">
+            {inspectedRoad.road_name}
+          </h3>
         </div>
-
-        {/* 24-Hour Slider Bar */}
-        <div className="bg-slate-800/60 rounded-xl p-4 border border-slate-700/80">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="h-8 w-8 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center transition shadow-md shadow-emerald-600/30"
-                title={isPlaying ? 'Pause timeline animation' : 'Play 24-hour simulation'}
-              >
-                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 fill-white" />}
-              </button>
-
-              <div>
-                <span className="text-white font-bold text-base sm:text-lg">
-                  {String(hour).padStart(2, '0')}:00{' '}
-                  <span className="text-xs font-normal text-slate-400">
-                    ({hour >= 12 ? (hour === 12 ? 12 : hour - 12) + ' PM' : (hour === 0 ? 12 : hour) + ' AM'})
-                  </span>
-                </span>
-                <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-700 text-slate-300">
-                  {hour >= 21 || hour <= 4 ? '🌙 Late Night (Peak Risk)' : [8, 9, 18, 19].includes(hour) ? '🚗 Rush Hour' : '☀️ Daytime'}
-                </span>
-              </div>
-            </div>
-
-            {/* Day of Week */}
-            <div className="flex items-center space-x-1 text-xs">
-              <Calendar className="h-3.5 w-3.5 text-purple-400" />
-              <select
-                value={dayOfWeek}
-                onChange={(e) => setDayOfWeek(e.target.value)}
-                className="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-purple-500"
-              >
-                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(d => (
-                  <option key={d} value={d}>
-                    {d} {d === 'Friday' ? '(Weekend Peak)' : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <input
-            type="range"
-            min="0"
-            max="23"
-            value={hour}
-            onChange={(e) => setHour(Number(e.target.value))}
-            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-          />
-
-          <div className="flex justify-between text-[10px] text-slate-400 mt-1.5 px-0.5">
-            <span>00:00 (Midnight)</span>
-            <span>06:00 (Dawn)</span>
-            <span>12:00 (Noon)</span>
-            <span>18:00 (Evening)</span>
-            <span>23:00 (Night)</span>
-          </div>
-        </div>
-
-        {/* Risk Legend */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mt-3 pt-3 border-t border-slate-800 text-xs">
-          <div className="flex items-center space-x-4">
-            <span className="text-slate-400 font-medium">Risk Legend:</span>
-            <div className="flex items-center space-x-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
-              <span className="text-slate-300">Low (0–34)</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-              <span className="text-slate-300">Medium (35–59)</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-orange-500" />
-              <span className="text-slate-300">High (60–79)</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
-              <span className="text-slate-300">Very High (80–100)</span>
-            </div>
-          </div>
-
-          <div className="text-slate-400 text-[11px]">
-            Showing <span className="text-white font-semibold">{roads.length}</span> road segments across Dhaka
-          </div>
-        </div>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => setInspectedRoad(null)}
+          aria-label="Close road details"
+          className="shrink-0"
+        >
+          <X className="h-4 w-4" aria-hidden="true" />
+        </Button>
       </div>
 
-      {/* Main Map & Road Inspector Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Leaflet Map */}
-        <div
-          className={`bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative h-[520px] ${inspectedRoad ? 'lg:col-span-2' : 'lg:col-span-3'}`}
-          style={{ minHeight: '520px' }}
-        >
-          <MapContainer
-            center={[23.77, 90.39]}
-            zoom={12}
-            style={{ height: '100%', width: '100%', backgroundColor: '#0f172a' }}
-          >
-            {mapTheme === 'streets' && (
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                maxZoom={19}
-              />
-            )}
-            {mapTheme === 'satellite' && (
-              <TileLayer
-                attribution='&copy; Esri, Maxar, Earthstar Geographics'
-                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                maxZoom={19}
-              />
-            )}
-            {mapTheme === 'dark' && (
-              <>
-                <TileLayer
-                  attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-                  maxZoom={16}
-                />
-                <TileLayer
-                  url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
-                  maxZoom={16}
-                  opacity={0.8}
-                />
-              </>
-            )}
+      <RiskMeter score={inspectedRoad.risk_score} />
 
-            {/* Hotspots Layer */}
-            {showHotspots && hotspots.map((h, i) => (
-              <Circle
-                key={`hotspot-${i}`}
-                center={[h.center_lat, h.center_lon]}
-                radius={h.radius_meters}
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-y border-line py-3 text-meta">
+        <div>
+          <dt className="text-ink-3">Street lighting</dt>
+          <dd className="mt-0.5 text-body text-ink">{describeLighting(inspectedRoad.lighting_condition)}</dd>
+        </div>
+        <div>
+          <dt className="text-ink-3">Road type</dt>
+          <dd className="mt-0.5 text-body text-ink">{describeRoadType(inspectedRoad.road_type)}</dd>
+        </div>
+        <div>
+          <dt className="text-ink-3">Bus stops</dt>
+          <dd className="mt-0.5 text-body text-ink tabular">{inspectedRoad.bus_stops_count}</dd>
+        </div>
+        <div>
+          <dt className="text-ink-3">Police posts</dt>
+          <dd className="mt-0.5 text-body text-ink tabular">{inspectedRoad.police_stations_nearby}</dd>
+        </div>
+        <div>
+          <dt className="text-ink-3">Length</dt>
+          <dd className="mt-0.5 text-body text-ink tabular">{formatMeters(inspectedRoad.length_meters)}</dd>
+        </div>
+        <div>
+          <dt className="text-ink-3">Reported incidents</dt>
+          <dd className="mt-0.5 text-body text-ink tabular">
+            {formatCount(inspectedRoad.historical_incidents)}
+          </dd>
+        </div>
+      </dl>
+
+      <section className="space-y-2">
+        <h4 className="text-meta font-medium text-ink-2">Risk across the day</h4>
+        {loadingTimeline ? (
+          <SkeletonBlock className="space-y-2" />
+        ) : roadTimeline.length > 0 ? (
+          <BarChart
+            data={roadTimeline.map((pt) => ({
+              key: pt.hour,
+              label: hour12(pt.hour),
+              value: pt.risk_score,
+              context: pt.risk_level,
+            }))}
+            question="How does risk change over 24 hours on this road?"
+            unit=" risk"
+            onSelect={(d) => setHour(Number(d.key))}
+            className="[&>div:first-child]:h-24"
+          />
+        ) : (
+          <p className="text-meta text-ink-3">The hourly pattern for this road is not available.</p>
+        )}
+      </section>
+
+      <Button
+        variant="secondary"
+        className="w-full"
+        onClick={handleOpenShap}
+        leftIcon={<LocateFixed className="h-4 w-4" aria-hidden="true" />}
+      >
+        Why this score?
+      </Button>
+    </div>
+  );
+
+  const mapPanel = (
+    <div className="relative h-full min-h-[420px] overflow-hidden rounded-card border border-line">
+      <MapContainer
+        center={[23.77, 90.39]}
+        zoom={12}
+        style={{ height: '100%', width: '100%' }}
+        zoomControl={false}
+      >
+        <ThemeLayers theme={mapTheme} />
+        <MapAutoBounds
+          coords={allRoads(roads)}
+          key={fitToken}
+          padding={40}
+        />
+
+        {showHotspots &&
+          hotspots.map((h, i) => (
+            <Circle
+              key={`hotspot-${i}`}
+              center={[h.center_lat, h.center_lon]}
+              radius={h.radius_meters}
+              pathOptions={{
+                color: '#d9773f',
+                fillColor: '#d9773f',
+                fillOpacity: 0.09,
+                weight: 1.25,
+                dashArray: '3,6',
+              }}
+            >
+              <Popup>
+                <div className="space-y-0.5">
+                  <p className="text-body font-medium text-ink">{h.area}</p>
+                  <p className="text-meta text-ink-2 tabular">
+                    {formatCount(h.incident_count)} reported incidents
+                  </p>
+                  <p className="text-meta text-ink-2">Mainly {h.primary_crime}</p>
+                </div>
+              </Popup>
+            </Circle>
+          ))}
+
+        {roads.map((road) => {
+          const selected = inspectedRoad?.road_id === road.road_id;
+          return (
+            <g key={road.road_id}>
+              <Polyline
+                positions={road.coordinates}
                 pathOptions={{
-                  color: h.color,
-                  fillColor: h.color,
-                  fillOpacity: 0.15,
-                  weight: 1.5,
-                  dashArray: '4, 4'
+                  color: selected ? SELECTED : CASING,
+                  weight: selected ? 9 : 5,
+                  opacity: selected ? 1 : 0.75,
+                }}
+              />
+              <Polyline
+                positions={road.coordinates}
+                eventHandlers={{ click: () => handleRoadClick(road) }}
+                pathOptions={{
+                  color: selected ? SELECTED : riskHex(road.risk_score),
+                  weight: selected ? 5.5 : 3.5,
+                  opacity: 1,
                 }}
               >
                 <Popup>
-                  <div className="p-1 space-y-1 text-xs">
-                    <div className="font-bold text-slate-900">{h.area} Crime Cluster</div>
-                    <div className="text-slate-600">Reported Incidents: <strong>{h.incident_count}</strong></div>
-                    <div className="text-slate-600">Primary: {h.primary_crime}</div>
-                    <div className="text-red-600 font-semibold">Severity: {h.severity}</div>
+                  <div className="space-y-0.5">
+                    <p className="text-body font-medium text-ink">{road.road_name}</p>
+                    <p className="text-meta text-ink-2">
+                      {road.area} · {road.thana}
+                    </p>
+                    <p className={cx('text-meta font-medium', getRiskLevel(road.risk_score).text)}>
+                      Risk {road.risk_score}/100 · {getRiskLevel(road.risk_score).label}
+                    </p>
                   </div>
                 </Popup>
-              </Circle>
-            ))}
+              </Polyline>
+            </g>
+          );
+        })}
+      </MapContainer>
 
-            {/* Road Segments */}
-            {showRoads && roads.map(road => {
-              const isSelected = inspectedRoad?.road_id === road.road_id;
-              return (
-                <React.Fragment key={road.road_id}>
-                  {/* High contrast dark casing for clear visibility on colorful maps */}
-                  <Polyline
-                    positions={road.coordinates}
-                    pathOptions={{
-                      color: isSelected ? '#0284c7' : '#090d16',
-                      weight: isSelected ? 9 : 6,
-                      opacity: 0.85
-                    }}
-                  />
-                  {/* Colored Risk Polyline */}
-                  <Polyline
-                    positions={road.coordinates}
-                    eventHandlers={{
-                      click: () => handleRoadClick(road)
-                    }}
-                    pathOptions={{
-                      color: isSelected ? '#38bdf8' : road.risk_color,
-                      weight: isSelected ? 6 : 4,
-                      opacity: 1.0
-                    }}
-                  >
-                    <Popup>
-                      <div className="p-1 space-y-1 text-xs">
-                        <div className="font-bold text-slate-900">{road.road_name}</div>
-                        <div className="text-slate-600">{road.area} ({road.thana})</div>
-                        <div className="font-semibold text-orange-600">
-                          Predicted Risk: {road.risk_score}/100 ({road.risk_level})
-                        </div>
-                        <div className="text-emerald-700">Confidence: {road.confidence}%</div>
-                      </div>
-                    </Popup>
-                  </Polyline>
-                </React.Fragment>
-              );
-            })}
-          </MapContainer>
+      <MapChrome theme={mapTheme} onThemeChange={setMapTheme}>
+        <LocateButton
+          onLocate={() => {
+            setInspectedRoad(null);
+            setFitToken((t) => t + 1);
+          }}
+        />
+        <button
+          type="button"
+          onClick={() => setShowHotspots((v) => !v)}
+          aria-pressed={showHotspots}
+          title={showHotspots ? 'Hide hotspot clusters' : 'Show hotspot clusters'}
+          className={cx(
+            'flex h-9 w-9 items-center justify-center rounded-control border shadow-lift backdrop-blur transition-colors',
+            showHotspots
+              ? 'border-warn/40 bg-warn-wash text-warn'
+              : 'border-line bg-surface/95 text-ink-2 hover:text-ink',
+          )}
+        >
+          <Layers className="h-4 w-4" aria-hidden="true" />
+          <span className="visually-hidden">Hotspot clusters</span>
+        </button>
+      </MapChrome>
 
-          <div className="absolute top-4 left-4 z-[400] bg-slate-900/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700 shadow-lg text-xs flex items-center space-x-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="text-slate-300">Live Spatial Inference</span>
-          </div>
+      {/* Time is the primary control on this page, so it floats over the map. */}
+      <div className="pointer-events-auto absolute inset-x-3 top-3 z-[500] sm:left-1/2 sm:right-auto sm:w-[420px] sm:-translate-x-1/2">
+        <div className="rounded-card border border-line bg-surface/95 p-3 shadow-lift backdrop-blur">
+          <div className="flex items-center gap-3">
+            <Button
+              size="sm"
+              variant={isPlaying ? 'secondary' : 'primary'}
+              onClick={() => setIsPlaying((v) => !v)}
+              aria-label={isPlaying ? 'Pause the day cycle' : 'Play the day cycle'}
+              className="h-9 w-9 shrink-0 px-0"
+            >
+              {isPlaying ? (
+                <Pause className="h-3.5 w-3.5" aria-hidden="true" />
+              ) : (
+                <Play className="h-3.5 w-3.5" aria-hidden="true" />
+              )}
+            </Button>
 
-          {/* Map Theme Toggle Switcher */}
-          <div className="absolute top-4 right-4 z-[400] bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-slate-700 shadow-lg flex space-x-1 text-xs">
-            <button
-              onClick={() => setMapTheme('streets')}
-              className={`px-2.5 py-1 rounded-lg font-medium transition ${
-                mapTheme === 'streets'
-                  ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              🗺️ Color Map
-            </button>
-            <button
-              onClick={() => setMapTheme('satellite')}
-              className={`px-2.5 py-1 rounded-lg font-medium transition ${
-                mapTheme === 'satellite'
-                  ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              🛰️ Satellite
-            </button>
-            <button
-              onClick={() => setMapTheme('dark')}
-              className={`px-2.5 py-1 rounded-lg font-medium transition ${
-                mapTheme === 'dark'
-                  ? 'bg-emerald-600 text-white shadow'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              🌙 Dark
-            </button>
+            <div className="min-w-0 flex-1">
+              <p className="text-body font-semibold text-ink tabular">
+                {hour12(hour)}
+                <span className="ml-2 text-meta font-normal text-ink-3">{daypartOf(hour).label}</span>
+              </p>
+              <input
+                type="range"
+                min={0}
+                max={23}
+                value={hour}
+                onChange={(e) => setHour(Number(e.target.value))}
+                aria-label="Hour of day"
+                aria-valuetext={hour24(hour)}
+                className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-surface-3 accent-[#14b8a6]"
+              />
+            </div>
           </div>
         </div>
-
-        {/* Road Inspector Drawer (Point 5 & 44 in document) */}
-        {inspectedRoad && (
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-2xl flex flex-col justify-between h-[520px] overflow-y-auto">
-            <div className="space-y-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Road Inspector
-                  </span>
-                  <h3 className="font-bold text-white text-base leading-snug">
-                    {inspectedRoad.road_name}
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    {inspectedRoad.area} • Thana: {inspectedRoad.thana}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setInspectedRoad(null)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Road Risk Score Badge */}
-              <div className="bg-slate-800/60 p-4 rounded-xl border border-slate-700 flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-slate-400 block">Predicted Theft Risk</span>
-                  <span className="text-2xl font-black text-white">
-                    {inspectedRoad.risk_score} <span className="text-sm font-normal text-slate-400">/ 100</span>
-                  </span>
-                  <span
-                    className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 border ${
-                      inspectedRoad.risk_score >= 80
-                        ? 'bg-red-500/20 text-red-400 border-red-500/30'
-                        : inspectedRoad.risk_score >= 60
-                        ? 'bg-orange-500/20 text-orange-400 border-orange-500/30'
-                        : inspectedRoad.risk_score >= 35
-                        ? 'bg-amber-500/20 text-amber-400 border-amber-500/30'
-                        : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
-                    }`}
-                  >
-                    {inspectedRoad.risk_level} RISK
-                  </span>
-                </div>
-
-                <div className="text-right">
-                  <span className="text-xs text-slate-400 block">Data Confidence</span>
-                  <span className="text-sm font-bold text-emerald-400">{inspectedRoad.confidence}%</span>
-                  <span className="text-[10px] text-slate-400 block mt-1">
-                    {inspectedRoad.historical_incidents} incidents recorded
-                  </span>
-                </div>
-              </div>
-
-              {/* Environmental Specs */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-slate-800/40 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block">Street Lighting</span>
-                  <span className="font-semibold text-white">{inspectedRoad.lighting_condition}</span>
-                </div>
-                <div className="bg-slate-800/40 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block">Transit Stops</span>
-                  <span className="font-semibold text-white">{inspectedRoad.bus_stops_count} Bus Stops</span>
-                </div>
-                <div className="bg-slate-800/40 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block">Length</span>
-                  <span className="font-semibold text-white">{inspectedRoad.length_meters}m</span>
-                </div>
-                <div className="bg-slate-800/40 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block">Police Posts</span>
-                  <span className="font-semibold text-white">{inspectedRoad.police_stations_nearby} Nearby</span>
-                </div>
-              </div>
-
-              {/* 24-Hour Diurnal Timeline (Point 44 in document) */}
-              <div>
-                <h4 className="text-xs font-semibold text-slate-300 mb-2 flex items-center space-x-1.5">
-                  <Clock className="h-3.5 w-3.5 text-cyan-400" />
-                  <span>24-Hour Diurnal Risk Timeline</span>
-                </h4>
-
-                {loadingTimeline ? (
-                  <div className="text-xs text-slate-400 py-4 text-center">Loading timeline curve...</div>
-                ) : (
-                  <div className="h-24 flex items-end space-x-1 bg-slate-800/40 p-2 rounded-xl border border-slate-800">
-                    {roadTimeline.map((pt, i) => {
-                      const heightPct = Math.max(12, pt.risk_score);
-                      const isCurrent = pt.hour === hour;
-                      return (
-                        <div
-                          key={i}
-                          className="flex-1 flex flex-col items-center group relative cursor-pointer"
-                          onClick={() => setHour(pt.hour)}
-                        >
-                          <div
-                            style={{ height: `${heightPct}%`, backgroundColor: getRiskColor(pt.risk_score) }}
-                            className={`w-full rounded-t-sm transition-all ${isCurrent ? 'ring-2 ring-white' : 'opacity-80 hover:opacity-100'}`}
-                          />
-                          {/* Tooltip on hover */}
-                          <div className="absolute bottom-full mb-1 hidden group-hover:block bg-slate-950 text-white text-[10px] p-1 rounded border border-slate-700 whitespace-nowrap z-50">
-                            {pt.time_label}: Risk {pt.risk_score}/100
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-                <div className="flex justify-between text-[10px] text-slate-500 mt-1">
-                  <span>00:00</span>
-                  <span>06:00</span>
-                  <span>12:00</span>
-                  <span>18:00</span>
-                  <span>23:00</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Explain with SHAP Action Button */}
-            <div className="pt-4 border-t border-slate-800">
-              <button
-                onClick={handleOpenShap}
-                className="w-full bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/40 hover:border-purple-500/60 font-medium text-xs py-2.5 rounded-xl flex items-center justify-center space-x-2 transition shadow-lg shadow-purple-600/10"
-              >
-                <Sparkles className="h-4 w-4 text-purple-400" />
-                <span>Explain Why AI Gave This Risk (SHAP)</span>
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* SHAP Modal */}
+      {isMobile && !inspectedRoad && (
+        <button
+          type="button"
+          onClick={() => setFitToken((t) => t + 1)}
+          className="absolute inset-x-3 bottom-3 z-[500] flex min-h-[48px] items-center justify-center rounded-control border border-line-strong bg-surface/95 text-body font-medium text-ink shadow-lift backdrop-blur"
+        >
+          Fit all {roads.length} roads
+        </button>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 pb-8 pt-6 sm:px-6 lg:px-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-display font-semibold tracking-tight text-ink">Risk around this time</h1>
+          <p className="mt-1 text-body text-ink-2">
+            Every road in the network, scored for the hour and day you choose.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="w-40">
+            <Field label="Day" hint={dayNote(dayOfWeek) || undefined}>
+              {(id) => (
+                <Select id={id} value={dayOfWeek} onChange={(e) => setDayOfWeek(e.target.value)}>
+                  {DAYS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </Field>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsRaining((v) => !v)}
+            aria-pressed={isRaining}
+            className={cx(
+              'flex h-10 items-center gap-2 rounded-control border px-3 text-body transition-colors',
+              isRaining
+                ? 'border-info/40 bg-info-wash text-info'
+                : 'border-line bg-surface-2 text-ink-2 hover:border-line-strong',
+            )}
+          >
+            {isRaining ? (
+              <CloudRain className="h-4 w-4" aria-hidden="true" />
+            ) : (
+              <Sun className="h-4 w-4" aria-hidden="true" />
+            )}
+            {isRaining ? 'Raining' : 'Clear'}
+          </button>
+        </div>
+      </div>
+
+      {error && <ErrorState className="mt-4" description={error} onRetry={() => fetchRoads(hour, dayOfWeek, isRaining ? 1 : 0)} />}
+
+      {isMobile ? (
+        <div className="mt-4">
+          <div className="h-[62dvh] min-h-[440px]">{mapPanel}</div>
+          <Sheet
+            isOpen={Boolean(inspectedRoad)}
+            onClose={() => setInspectedRoad(null)}
+            title={inspectedRoad?.road_name ?? 'Road'}
+            description={inspectedRoad ? `${inspectedRoad.area} · ${inspectedRoad.thana}` : undefined}
+          >
+            {inspector}
+          </Sheet>
+        </div>
+      ) : (
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-5">
+          <div className={cx('lg:col-span-3', inspectedRoad && 'lg:col-span-2')}>
+            <div className="h-[calc(100dvh-16rem)] min-h-[560px]">{mapPanel}</div>
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+              <RiskLegend />
+              <p className="text-meta text-ink-3 tabular">
+                {loading ? 'Scoring roads…' : `${roads.length} roads`}
+              </p>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2">
+            {inspectedRoad ? (
+              <Surface tone="panel" className="p-5">
+                {inspector}
+              </Surface>
+            ) : (
+              <Surface tone="panel" className="p-5">
+                <h2 className="text-section font-semibold tracking-tight text-ink">Pick a road</h2>
+                <p className="mt-1 text-body text-ink-2">
+                  Select any line on the map to see its risk for {hour12(hour)} on {dayOfWeek}
+                  {isRaining ? ', in rain' : ''}.
+                </p>
+                <dl className="mt-4 space-y-2.5 border-t border-line pt-4 text-meta">
+                  <div className="flex items-center justify-between gap-3">
+                    <dt className="text-ink-3">Roads scored</dt>
+                    <dd className="tabular text-body text-ink">{roads.length}</dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <dt className="text-ink-3">Hotspot clusters</dt>
+                    <dd className="tabular text-body text-ink">
+                      {showHotspots ? hotspots.length : 0}
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <dt className="text-ink-3">Weather</dt>
+                    <dd className="text-body text-ink">{isRaining ? 'Rain' : 'Clear'}</dd>
+                  </div>
+                </dl>
+              </Surface>
+            )}
+          </div>
+        </div>
+      )}
+
       {inspectedRoad && (
         <ShapModal
           isOpen={isShapOpen}
@@ -536,10 +475,26 @@ export const RiskMap: React.FC = () => {
           area={inspectedRoad.area}
           riskScore={inspectedRoad.risk_score}
           riskLevel={inspectedRoad.risk_level}
-          confidence={inspectedRoad.confidence}
+          confidence={shapConfidence ?? 0}
+          confidenceKnown={shapConfidence !== null}
+          isLoading={loadingShap}
           factors={shapFactors}
         />
       )}
     </div>
   );
 };
+
+function LocateButton({ onLocate }: { onLocate: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onLocate}
+      aria-label="Fit everything on screen"
+      title="Fit everything on screen"
+      className="flex h-9 w-9 items-center justify-center rounded-control border border-line bg-surface/95 text-ink-2 shadow-lift backdrop-blur transition-colors hover:text-ink"
+    >
+      <LocateFixed className="h-4 w-4" aria-hidden="true" />
+    </button>
+  );
+}

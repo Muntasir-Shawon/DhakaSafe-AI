@@ -1,29 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
-import { RouteFinder } from './components/RouteFinder';
-import { RiskMap } from './components/RiskMap';
-import { AnalyticsView } from './components/AnalyticsView';
-import { ForecastExplainabilityView } from './components/ForecastExplainabilityView';
 import { EthicalNoticeModal } from './components/EthicalNoticeModal';
-import { Shield, ExternalLink, Heart, AlertTriangle } from 'lucide-react';
+import { BrandLockup } from './components/brand/Logo';
+import { TabNav } from './components/nav/TabNav';
+import { SkeletonBlock } from './components/ui/StateViews';
+import { useHashRoute } from './lib/routing';
+
+// Split per view. Leaflet (~150 KB) only downloads when a map is opened.
+const RouteFinder = lazy(() =>
+  import('./components/RouteFinder').then((m) => ({ default: m.RouteFinder })),
+);
+const RiskMap = lazy(() =>
+  import('./components/RiskMap').then((m) => ({ default: m.RiskMap })),
+);
+const AnalyticsView = lazy(() =>
+  import('./components/AnalyticsView').then((m) => ({ default: m.AnalyticsView })),
+);
+const ForecastExplainabilityView = lazy(() =>
+  import('./components/ForecastExplainabilityView').then((m) => ({
+    default: m.ForecastExplainabilityView,
+  })),
+);
+
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://127.0.0.1:8000/api';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'routes' | 'map' | 'analytics' | 'forecast'>('routes');
+  const [activeTab, setActiveTab] = useHashRoute();
   const [isEthicsOpen, setIsEthicsOpen] = useState<boolean>(false);
   const [isHealthy, setIsHealthy] = useState<boolean>(true);
 
-  // Check backend health
   useEffect(() => {
     async function checkHealth() {
       try {
-        const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://127.0.0.1:8000/api';
         const res = await fetch(`${API_BASE_URL}/health`);
-        if (res.ok) {
-          setIsHealthy(true);
-        } else {
-          setIsHealthy(false);
-        }
-      } catch (err) {
+        setIsHealthy(res.ok);
+      } catch {
         setIsHealthy(false);
       }
     }
@@ -33,8 +45,7 @@ export function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-white">
-      {/* Top Navigation */}
+    <div className="flex min-h-dvh flex-col">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -42,47 +53,47 @@ export function App() {
         isBackendHealthy={isHealthy}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1">
-        {activeTab === 'routes' && <RouteFinder />}
-        {activeTab === 'map' && <RiskMap />}
-        {activeTab === 'analytics' && <AnalyticsView />}
-        {activeTab === 'forecast' && <ForecastExplainabilityView />}
+      <main className="flex-1 pb-[calc(54px+env(safe-area-inset-bottom))] lg:pb-0">
+        <Suspense
+          fallback={
+            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+              <SkeletonBlock />
+            </div>
+          }
+        >
+          {activeTab === 'route' && <RouteFinder />}
+          {activeTab === 'map' && <RiskMap />}
+          {activeTab === 'analytics' && <AnalyticsView />}
+          {activeTab === 'forecast' && <ForecastExplainabilityView />}
+        </Suspense>
       </main>
 
-      {/* Footer with Ethical Disclaimer */}
-      <footer className="bg-slate-900/60 border-t border-slate-800/80 mt-12 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <div className="flex items-center space-x-3">
-            <div className="h-6 w-6 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-              <Shield className="h-3.5 w-3.5 text-emerald-400" />
-            </div>
-            <div>
-              <span className="font-semibold text-white">DhakaSafe AI</span> — Spatio-Temporal Street Theft Risk Prediction & Safe Route Recommendation
-            </div>
+      <footer className="mt-12 border-t border-line py-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-meta text-ink-3 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+          <div className="flex items-center gap-2.5">
+            <BrandLockup size="sm" />
+            <span aria-hidden="true">·</span>
+            <span className="text-ink-3">
+              Street theft risk and safe route guidance across Dhaka
+            </span>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <button
+              type="button"
               onClick={() => setIsEthicsOpen(true)}
-              className="text-amber-400 hover:text-amber-300 underline flex items-center space-x-1"
+              className="underline decoration-line-strong underline-offset-4 transition-colors hover:text-ink-2"
             >
-              <AlertTriangle className="h-3 w-3" />
-              <span>Ethical AI Policy</span>
+              Reported crime is not the same as actual crime
             </button>
-            <span>•</span>
-            <span>Reported Crime ≠ Actual Crime Limitation</span>
-            <span>•</span>
-            <span className="font-mono text-slate-500">v1.0.0</span>
+            <span className="tabular">v1.0.0</span>
           </div>
         </div>
       </footer>
 
-      {/* Ethical Notice Modal */}
-      <EthicalNoticeModal
-        isOpen={isEthicsOpen}
-        onClose={() => setIsEthicsOpen(false)}
-      />
+      <TabNav active={activeTab} onChange={setActiveTab} variant="bottom" />
+
+      <EthicalNoticeModal isOpen={isEthicsOpen} onClose={() => setIsEthicsOpen(false)} />
     </div>
   );
 }

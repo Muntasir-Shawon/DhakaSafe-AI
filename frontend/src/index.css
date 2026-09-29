@@ -1,49 +1,312 @@
 @import "tailwindcss";
-@source "../";
 @import "leaflet/dist/leaflet.css";
+@import "@fontsource-variable/inter/wght.css";
+@import "@fontsource/hind-siliguri/bengali-400.css";
+@import "@fontsource/hind-siliguri/bengali-600.css";
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #020617;
-  color: #f8fafc;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  -webkit-font-smoothing: antialiased;
+@source "../";
+
+/* ==========================================================================
+   DhakaSafe Design System
+   Calm, precise, human. Navy surfaces, one muted teal accent.
+   ========================================================================== */
+
+@theme {
+  /* --- Surfaces: deep desaturated navy, never pure black ---------------- */
+  --color-canvas: #0b1220;
+  --color-surface: #0f172a;
+  --color-surface-2: #162033;
+  --color-surface-3: #1a2638;
+
+  /* --- Accent: muted teal. An accent, never a card colour. -------------- */
+  --color-accent: #14b8a6;
+  --color-accent-soft: #2dd4bf;
+  --color-accent-ink: #0b1220;
+  --color-accent-wash: #14b8a61a;
+
+  /* --- Secondary accent: soft blue ------------------------------------- */
+  --color-info: #60a5fa;
+  --color-info-wash: #60a5fa1a;
+
+  /* --- Status: warm and muted, never neon ------------------------------ */
+  --color-caution: #d9a441;
+  --color-caution-wash: #d9a4411a;
+  --color-warn: #d9773f;
+  --color-warn-wash: #d9773f1a;
+  --color-danger: #e2725b;
+  --color-danger-wash: #e2725b1a;
+  --color-safe: #4fb286;
+  --color-safe-wash: #4fb2861a;
+
+  /* --- Text: off-white ------------------------------------------------- */
+  --color-ink: #e8eef5;
+  --color-ink-2: #94a3b8;
+  --color-ink-3: #7a8aa1;
+
+  /* --- Borders: low contrast ------------------------------------------- */
+  --color-line: #1e2a3d;
+  --color-line-strong: #2a3a52;
+
+  /* --- Type ------------------------------------------------------------ */
+  --font-sans: "Inter Variable", "Hind Siliguri", system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-bangla: "Hind Siliguri", "Inter Variable", system-ui, sans-serif;
+
+  --text-display: 1.375rem/1.75 var(--font-sans);
+  --text-section: 0.9375rem/1.25 var(--font-sans);
+  --text-body: 0.875rem/1.3125 var(--font-sans);
+  --text-meta: 0.78125rem/1.125 var(--font-sans);
+  --text-stat: 1.5rem/1.75 var(--font-sans);
+
+  /* --- Radii: small and consistent ------------------------------------- */
+  --radius-control: 8px;
+  --radius-card: 10px;
+  --radius-panel: 14px;
+
+  /* --- Elevation: three soft levels, no glow ---------------------------- */
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.24);
+  --shadow-lift: 0 8px 24px -12px rgb(0 0 0 / 0.55);
+  --shadow-sheet: 0 -12px 40px -16px rgb(0 0 0 / 0.7);
+
+  /* --- Motion ---------------------------------------------------------- */
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.25, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 140ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  --animate-fade-in: fade-in var(--dur-base) var(--ease-standard);
+  --animate-rise: rise var(--dur-slow) var(--ease-standard);
+  --animate-sheet-in: sheet-in var(--dur-slow) var(--ease-standard);
+  --animate-sheet-out: sheet-out var(--dur-base) var(--ease-exit);
+  --animate-skeleton: skeleton 1.4s var(--ease-standard) infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes sheet-out {
+    from {
+      transform: none;
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes skeleton {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
 }
 
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv05" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Layered ambient background: two very soft radial lights over a faint
+     dot grid. Reads as a calm evening city, never a glow. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1200px 620px at 12% -8%, rgb(20 184 166 / 0.055), transparent 60%),
+      radial-gradient(1000px 540px at 88% -4%, rgb(96 165 250 / 0.04), transparent 62%),
+      radial-gradient(circle at 1px 1px, rgb(148 163 184 / 0.05) 1px, transparent 0);
+    background-size:
+      100% 100%,
+      100% 100%,
+      30px 30px;
+  }
+
+  /* Numbers line up in columns. */
+  th,
+  td,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* One focus treatment for the whole app. Replaces every `focus:outline-none`. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+}
+
+/* ==========================================================================
+   Components: Leaflet overrides
+   ========================================================================== */
+
 .leaflet-container {
-  background-color: #0b0f19 !important;
-  font-family: inherit;
+  background-color: var(--color-canvas) !important;
+  font-family: var(--font-sans);
+  outline: none;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #0f172a !important;
-  color: #f8fafc !important;
-  border: 1px solid #334155 !important;
-  border-radius: 12px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
-}
-
-.leaflet-popup-tip {
-  background: #0f172a !important;
+  background: var(--color-surface-2) !important;
+  color: var(--color-ink) !important;
+  border: 1px solid var(--color-line-strong) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--shadow-lift) !important;
 }
 
 .leaflet-popup-content {
-  margin: 10px !important;
-  line-height: 1.4 !important;
+  margin: 12px !important;
+  line-height: 1.45 !important;
+  color: var(--color-ink) !important;
+  min-width: 168px;
 }
 
+.leaflet-popup-tip {
+  background: var(--color-surface-2) !important;
+  border: 1px solid var(--color-line-strong) !important;
+}
+
+.leaflet-popup-close-button {
+  color: var(--color-ink-3) !important;
+  padding: 8px 8px 0 0 !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: var(--color-ink) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgb(11 18 32 / 0.82) !important;
+  color: var(--color-ink-3) !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-ink-2) !important;
+}
+
+.leaflet-bar,
+.leaflet-control-zoom {
+  border: 1px solid var(--color-line) !important;
+  border-radius: var(--radius-control) !important;
+  box-shadow: var(--shadow-soft) !important;
+  overflow: hidden;
+}
+
+.leaflet-bar a,
+.leaflet-control-zoom a {
+  background: var(--color-surface-2) !important;
+  color: var(--color-ink) !important;
+  border-bottom-color: var(--color-line) !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 30px !important;
+  font-size: 16px !important;
+}
+
+.leaflet-bar a:hover,
+.leaflet-control-zoom a:hover {
+  background: var(--color-surface-3) !important;
+  color: var(--color-ink) !important;
+}
+
+/* Custom map markers are plain divs; strip the default icon chrome. */
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+/* ==========================================================================
+   Scrollbars
+   ========================================================================== */
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 3px;
+  background: var(--color-line-strong);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #3a4c66;
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+/* Motion is decoration. If the reader has asked for less, give them none. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border-width: 0;
 }
